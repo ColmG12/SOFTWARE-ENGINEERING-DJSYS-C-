@@ -1,0 +1,6009 @@
+--ColmGallagher.sql
+
+--References for 'DEFAULT' & 'CHECK'
+--https://data36.com/create-table-sql/
+--https://www.geeksforgeeks.org/sql-check-constraint/
+--https://www.w3resource.com/sql/creating-and-maintaining-tables/creating-table-constraint.php#exam6
+--https://www.w3schools.com/SQl/sql_default.asp
+--https://www.w3schools.com/sql/sql_check.asp
+--https://www.tutorialspoint.com/sql/sql-default.htm
+
+--Drop all Tables
+DROP TABLE Bookings;
+DROP TABLE Services;
+DROP TABLE DJs;
+DROP TABLE Client;
+
+-- Create Client Table
+CREATE TABLE Client(
+Client_ID numeric(5) NOT NULL, 
+Forename varchar2(25) NOT NULL, 
+Surname varchar2(30) NOT NULL, 
+Date_Of_Birth date NOT NULL, 
+Contact_No varchar2(20) NOT NULL, 
+Email varchar2(50) NOT NULL, 
+Street varchar2(30) NOT NULL, 
+Town varchar2(25) NOT NULL, 
+City varchar2(25), 
+County varchar2(15) NOT NULL, 
+Eircode varchar2(7) NOT NULL, 
+Status varchar2(1) DEFAULT 'A' NOT NULL, 
+CONSTRAINT pk_Client PRIMARY KEY (Client_ID),
+CHECK(Status in ('A', 'W'))
+);
+
+-- Create DJs Table
+CREATE TABLE DJs(
+DJ_ID numeric(3) NOT NULL, 
+Forename varchar2(25) NOT NULL, 
+Surname varchar2(30) NOT NULL, 
+Date_Of_Birth date NOT NULL, 
+Contact_No varchar2(20) NOT NULL, 
+Email varchar2(50) NOT NULL, 
+Street varchar2(30) NOT NULL, 
+Town varchar2(25) NOT NULL, 
+City varchar2(25), 
+County varchar2(15) NOT NULL, 
+Eircode varchar2(7) NOT NULL,
+Hourly_Rate numeric(5,2) DEFAULT 0.00 NOT NULL, 
+Status varchar2(1) DEFAULT 'A' NOT NULL, 
+CONSTRAINT pk_DJs PRIMARY KEY (DJ_ID),
+CHECK(Status in ('A', 'W'))
+);
+
+-- Create Services Table
+CREATE TABLE Services(
+Service_ID varchar2(4) NOT NULL,
+Description varchar2(30) NOT NULL,
+Base_Rate numeric(5,2) DEFAULT 0.00 NOT NULL,
+Status varchar2(1) NOT NULL, 
+CONSTRAINT pk_Services PRIMARY KEY (Service_ID)
+);
+
+-- Create Bookings Table
+CREATE TABLE Bookings(
+Booking_ID numeric(6) NOT NULL, 
+Booking_Date date DEFAULT TO_CHAR(SYSDATE, 'dd-Mon-yy') NOT NULL,
+Event_Date date NOT NULL,
+Start_Time char(5) NOT NULL,
+End_Time char(5) NOT NULL, 
+Duration numeric(3,1) NOT NULL, 
+Location varchar2(200) NOT NULL, 
+Eircode varchar2(7) NOT NULL,
+Total_Cost numeric(6,2) DEFAULT 0.00 NOT NULL, 
+Payment_Status varchar2(1) DEFAULT 'P' NOT NULL, 
+Refund_Percentage numeric(3) DEFAULT 0 NOT NULL, 
+Refund_Due numeric(6,2) DEFAULT 0.00 NOT NULL, 
+Booking_Status varchar2(1) DEFAULT 'A' NOT NULL,
+Client_ID numeric(5) NOT NULL, 
+DJ_ID numeric(3) NOT NULL,
+Service_ID varchar2(4) NOT NULL, 
+CONSTRAINT pk_Bookings PRIMARY KEY (Booking_ID),
+CONSTRAINT fk_BookingsClient FOREIGN KEY(Client_ID) REFERENCES Client(Client_ID),
+CONSTRAINT fk_BookingsDJs FOREIGN KEY(DJ_ID) REFERENCES DJs(DJ_ID),
+CONSTRAINT fk_BookingsServices FOREIGN KEY(Service_ID) REFERENCES Services(Service_ID),
+CHECK(Payment_Status in ('P', 'R')),
+CHECK(Refund_Percentage in (0, 50, 75, 100)),
+CHECK(Booking_Status in ('A', 'C'))
+);
+
+ INSERT INTO Client VALUES(
+'1',
+'PAT',
+'SHEEHAN',
+to_date('28/11/1966', 'DD/MM/YYYY'),
+'0871952209',
+'patsheehan1@gmail.com',
+'46 BEAUCHAMP ROAD',
+'THE OLD FORGE',
+'KILLARNEY',
+'KERRY',
+'V93NT96',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'2',
+'BARRY',
+'MCLEAVY',
+to_date('19/06/1953', 'DD/MM/YYYY'),
+'0871830894',
+'barrymcleavy53@hotmail.com',
+'5 FEALE DRIVE',
+'DIRRAH EAST',
+'LISTOWEL',
+'KERRY',
+'V31TP62',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'3',
+'GARY',
+'CUMMINS',
+to_date('23/01/1967', 'DD/MM/YYYY'),
+'0879567462',
+'gcummins@gmail.com',
+'47 DERWENT GROVE',
+'CASTLEISLAND',
+'KERRY',
+'KERRY',
+'V31D783',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'4',
+'FRANK',
+'KILBRIDE',
+to_date('14/06/1951', 'DD/MM/YYYY'),
+'0873985837',
+'frankie@gmail.com',
+'38 JUBILEE STREET',
+'EDGEWORTHSTOWN',
+'LONGFORD',
+'LONGFORD',
+'N39F50C',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'5',
+'MARY',
+'MULLINS',
+to_date('27/01/1983', 'DD/MM/YYYY'),
+'0872563595',
+'mullinsmary@gmail.com',
+'THE COTTAGE, BOULA',
+'KNOCKNAGOSHEL',
+'KERRY',
+'KERRY',
+'V31D928',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'6',
+'MICK',
+'FLANAGAN',
+to_date('14/07/1958', 'DD/MM/YYYY'),
+'0851473695',
+'flanmick@gmail.com',
+'RENAGOWN CROSS, LYREACROMPANE',
+'LISTOWEL',
+'KERRY',
+'KERRY',
+'M83J387',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'7',
+'JOHN PAUL',
+'FITZGERALD',
+to_date('04/06/1942', 'DD/MM/YYYY'),
+'0875914365',
+'jpfitz@gmail.com',
+'BOULA EAST',
+'KNOCKNAGOSHEL',
+'LISTOWEL',
+'KERRY',
+'G83V367',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'8',
+'DAN',
+'HAYES',
+to_date('17/03/1961', 'DD/MM/YYYY'),
+'0862529475',
+'danjo@yahoo.com',
+'14 COUNTESS GROVE',
+'AVENUE',
+'KILLARNEY',
+'KERRY',
+'V93R24W',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'9',
+'LISA',
+'MCHUGH',
+to_date('24/10/2000', 'DD/MM/YYYY'),
+'0877184857',
+'lisamchugh@gmail.com',
+'10 COLLEGE ST',
+'KILLARNEY TOWN',
+'KILLARNEY',
+'KERRY',
+'V93WP65',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'10',
+'LARRY',
+'LONG',
+to_date('24/10/2000', 'DD/MM/YYYY'),
+'0873394485',
+'longlarry@gmail.com',
+'THE SQUARE',
+'KENMARE',
+'KENMARE',
+'KERRY',
+'V93CY93',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'11',
+'BILLY',
+'KEANE',
+to_date('29/11/1968', 'DD/MM/YYYY'),
+'0879968142',
+'keanobill@gmail.com',
+'37 WILLIAM ST',
+'LISTOWEL',
+'LISTOWEL',
+'KERRY',
+'V93LI93',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'12',
+'LESLEY',
+'MCGRATH',
+to_date('31/05/1981', 'DD/MM/YYYY'),
+'0874485526',
+'lesleymc81@gmail.com',
+'5 BROGUE MAKERS LANE',
+'GALLOWSFIELDS',
+'TRALEE',
+'KERRY',
+'V93V937',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'13',
+'KEVIN',
+'MCDERMOTT',
+to_date('01/09/1985', 'DD/MM/YYYY'),
+'0876958256',
+'mcdrmottkev85@gmail.com',
+'THE HILLGROVE',
+'SPA RD',
+'DINGLE',
+'KERRY',
+'V92P048',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'14',
+'BABS',
+'GRIFFIN',
+to_date('18/11/1981', 'DD/MM/YYYY'),
+'0877578489',
+'babsalicious@gmail.com',
+'MAIN STREET',
+'COMERFORD LOT',
+'GOLDEN',
+'TIPPERARY',
+'E25YD89',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'15',
+'GRAHAM',
+'BYRNE',
+to_date('06/06/1972', 'DD/MM/YYYY'),
+'0871596453',
+'gman@gmail.com',
+'60 KENNINGTON PARK ROAD',
+'DRUMCONDRA',
+'DUBLIN',
+'DUBLIN',
+'D42J948',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'16',
+'CARRAIG JOHN',
+'MC NULTY',
+to_date('02/11/1998', 'DD/MM/YYYY'),
+'0874747125',
+'carraig98@gmail.com',
+'54 THE LANE',
+'DUAGH',
+'LISTOWEL',
+'KERRY',
+'V74H392',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'17',
+'NOEL',
+'EDMONDS',
+to_date('02/04/1959', 'DD/MM/YYYY'),
+'0878787877',
+'noele@gmail.com',
+'BBC LANE',
+'TRALEE',
+'',
+'KERRY',
+'V73J938',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'18',
+'TIMMY',
+'DOOLEY',
+to_date('01/02/1989', 'DD/MM/YYYY'),
+'0874512542',
+'td@gmail.com',
+'THE WRECK',
+'THE WRECKAGE',
+'KERRY',
+'KERRY',
+'B73J928',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'19',
+'TED',
+'HASTINGS',
+to_date('15/10/1954', 'DD/MM/YYYY'),
+'0875651548',
+'ted@gmail.com',
+'LINE STREET',
+'DUTY TOWN',
+'LIMERICK',
+'LIMERICK',
+'L83H932',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'20',
+'NOEL',
+'GALLAGHER',
+to_date('04/04/1969', 'DD/MM/YYYY'),
+'0875632145',
+'noelg@gmail.com',
+'OASIS STREET',
+'OASIS TOWN',
+'OASIS CITY',
+'KERRY',
+'F39O039',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'21',
+'JASON',
+'KILBANE',
+to_date('21/08/1971', 'DD/MM/YYYY'),
+'0874512365',
+'jason@gmail.com',
+'MAIN STREET',
+'CASTLEBAR',
+'MAYO',
+'MAYO',
+'A59D948',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'22',
+'DERMOT',
+'WHELAN',
+to_date('21/07/1971', 'DD/MM/YYYY'),
+'0874512342',
+'dermotwhelan@gmail.com',
+'40 GRANGE ROAD',
+'TOOMEBRIDGE',
+'ANTRIM',
+'ANTRIM',
+'A59D948',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'23',
+'DAVE',
+'MOORE',
+to_date('02/07/1971', 'DD/MM/YYYY'),
+'0874516547',
+'davemoore@gmail.com',
+'1 EAGRALOUGHER ROAD',
+'LOUGHGALL',
+'ARMAGH',
+'ARMAGH',
+'A59D948',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'24',
+'NEIL',
+'FOX',
+to_date('02/07/1963', 'DD/MM/YYYY'),
+'0874511814',
+'foxyneil@gmail.com',
+'COLLEGE STREET',
+'GRAIGUE',
+'CARLOW',
+'CARLOW',
+'R93H4F8',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'25',
+'MARTIN',
+'COLLINS',
+to_date('04/10/1962', 'DD/MM/YYYY'),
+'0874510029',
+'martincollins@gmail.com',
+'LISSYCASEY',
+'ENNIS',
+'CLARE',
+'CLARE',
+'V95DX08',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'26',
+'LOUIS',
+'MULCAHY',
+to_date('04/08/1942', 'DD/MM/YYYY'),
+'0874511469',
+'louismulcahy@gmail.com',
+'116 OLIVER PLUNKETT STREET',
+'CENTRE',
+'CORK',
+'CORK',
+'T12P957',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'27',
+'JONNY',
+'O''KEEFFE',
+to_date('14/08/1986', 'DD/MM/YYYY'),
+'0874515479',
+'jonny86@gmail.com',
+'DUBLIN ROAD',
+'KILLYGARRY',
+'CAVAN',
+'CAVAN',
+'H12V207',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'28',
+'JIM',
+'CRUDDEN',
+to_date('29/04/1966', 'DD/MM/YYYY'),
+'0874510095',
+'cruddenjim@gmail.com',
+'27 STRAND ROAD',
+'DERRY TOWN',
+'DERRY',
+'DERRY',
+'H12V248',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'29',
+'TONY',
+'CUMMINS',
+to_date('09/03/1945', 'DD/MM/YYYY'),
+'0874514493',
+'cumminstony@gmail.com',
+'24 UPPER CHURCH STREET',
+'TOWN LOT',
+'TIPPERARY',
+'TIPPERARY',
+'E34XK53',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'30',
+'BILLY',
+'SYNAN',
+to_date('14/12/1958', 'DD/MM/YYYY'),
+'0874513378',
+'williamsynan@gmail.com',
+'2 THE HEIGHTS',
+'DOWNPATRICK',
+'DOWN',
+'DOWN',
+'E34XK27',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'31',
+'COLM',
+'MEANEY',
+to_date('24/12/1952', 'DD/MM/YYYY'),
+'0874511493',
+'colmmeaney@gmail.com',
+'81 TALBOT STREET',
+'DOWNTOWN',
+'NORTH CITY',
+'DUBLIN',
+'D02TW84',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'32',
+'DAVID',
+'CONNOLLY',
+to_date('24/10/1981', 'DD/MM/YYYY'),
+'0874510759',
+'connollydavid@gmail.com',
+'1 DAME STREET',
+'DOWNTOWN',
+'NORTH CITY',
+'DUBLIN',
+'D02TW84',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'33',
+'PAUL',
+'HICKEY',
+to_date('24/02/1966', 'DD/MM/YYYY'),
+'0874514471',
+'hickeypaul@gmail.com',
+'139 BAGGOT STREET LOWER',
+'DOWNTOWN',
+'DUBLIN',
+'DUBLIN',
+'D02TW84',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'34',
+'DAVE',
+'ARCH',
+to_date('22/05/1976', 'DD/MM/YYYY'),
+'0874516631',
+'arch76@gmail.com',
+'39 FENIAN STREET',
+'DUBLIN 2',
+'DUBLIN',
+'DUBLIN',
+'D02KD51',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'35',
+'DES',
+'SHANNON',
+to_date('22/11/1966', 'DD/MM/YYYY'),
+'0874515250',
+'desmondshannon@gmail.com',
+'48 TEMPLE BAR',
+'DUBLIN',
+'DUBLIN',
+'DUBLIN',
+'D02N725',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'36',
+'PETER',
+'WARD',
+to_date('10/06/1977', 'DD/MM/YYYY'),
+'0874516932',
+'wardiep@gmail.com',
+'30 HARCOURT STREET',
+'SAINT KEVIN''S',
+'DUBLIN 2',
+'DUBLIN',
+'D02XV58',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'37',
+'SAMMY',
+'YOUSSEF',
+to_date('14/10/1979', 'DD/MM/YYYY'),
+'0874511405',
+'paddythearab@gmail.com',
+'33 OLD SLIGO ROAD',
+'ENNISKILLEN',
+'FERMANAGH',
+'FERMANAGH',
+'V92EK74',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'38',
+'JOHN',
+'MOLONEY',
+to_date('06/07/1980', 'DD/MM/YYYY'),
+'0874514852',
+'johnmoloney80@gmail.com',
+'2 SEA ROAD',
+'GALWAY TOWN',
+'GALWAY',
+'GALWAY',
+'H91YY06',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'39',
+'AIMEE',
+'HENAGHAN',
+to_date('23/01/1983', 'DD/MM/YYYY'),
+'0874518826',
+'aimeeh@gmail.com',
+'27 EYRE SQUARE',
+'GALWAY TOWN',
+'GALWAY',
+'GALWAY',
+'H91YY06',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'40',
+'AISLING',
+'KILBANE',
+to_date('01/01/1974', 'DD/MM/YYYY'),
+'0874519960',
+'aiskilbane74@gmail.com',
+'5 SULLIVAN''S QUAY',
+'CENTRE',
+'CORK',
+'CORK',
+'T12H771',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'41',
+'DES',
+'LYNAM',
+to_date('31/01/1951', 'DD/MM/YYYY'),
+'0874513901',
+'legenddes@gmail.com',
+'19 PARNELL PLACE',
+'CENTRE',
+'CORK',
+'CORK',
+'T12H771',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'42',
+'ELTON',
+'WELSBY',
+to_date('29/04/1961', 'DD/MM/YYYY'),
+'0874515985',
+'eltonw@gmail.com',
+'CUTBUSH',
+'BALLYFAIR',
+'THE CURRAGH',
+'KILDARE',
+'R56Y522',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'43',
+'ANTHONY',
+'MCPARTLIN',
+to_date('18/05/1977', 'DD/MM/YYYY'),
+'0874511963',
+'mcant77@gmail.com',
+'3 FRIARY STREET',
+'GARDENS',
+'KILKENNY CITY',
+'KILKENNY',
+'R95X932',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'44',
+'DECLAN',
+'DONNELLY',
+to_date('16/05/1977', 'DD/MM/YYYY'),
+'0874517874',
+'dondec77@gmail.com',
+'26 PARLIAMENT STREET',
+'GARDENS',
+'KILKENNY CITY',
+'KILKENNY',
+'R95VW31',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'45',
+'KELLY',
+'DONEGAN',
+to_date('06/06/1982', 'DD/MM/YYYY'),
+'0874511286',
+'donkel82@gmail.com',
+'GREATHEATH',
+'PORTLAOISE',
+'LAOIS',
+'LAOIS',
+'R32X803',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'46',
+'DANNY',
+'MCGHEE',
+to_date('21/08/1969', 'DD/MM/YYYY'),
+'0874511825',
+'dannymc69@gmail.com',
+'MAIN STREET',
+'TULLYLANNAN',
+'LEITRIM VILLAGE',
+'LEITRIM',
+'N41KX81',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'47',
+'NEIL',
+'FLOYD',
+to_date('11/08/1973', 'DD/MM/YYYY'),
+'0874510198',
+'floydyneil@gmail.com',
+'52 O''CONNELL STREET',
+'LIMERICK',
+'LIMERICK CITY',
+'LIMERICK',
+'V94NYH9',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'48',
+'DANNY',
+'FLOYD',
+to_date('11/08/1973', 'DD/MM/YYYY'),
+'0874512575',
+'floydydan@gmail.com',
+'3 GEORGE''S QUAY',
+'LIMERICK',
+'LIMERICK CITY',
+'LIMERICK',
+'V94K8KX',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'49',
+'ANDREW',
+'WATTS',
+to_date('10/09/1979', 'DD/MM/YYYY'),
+'0874510858',
+'andywatts@gmail.com',
+'RIVER',
+'DOOKINELLA',
+'ACHILL ISLAND',
+'MAYO',
+'F28D7P8',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'50',
+'STEVEN',
+'WATTS',
+to_date('12/09/1978', 'DD/MM/YYYY'),
+'0874517742',
+'wattsy78@gmail.com',
+'BRIDGE STREET',
+'CAHERNAMART',
+'WESTPORT',
+'MAYO',
+'F28A298',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'51',
+'JUSTIN',
+'KILBANE',
+to_date('18/09/1976', 'DD/MM/YYYY'),
+'0874511746',
+'jk76@gmail.com',
+'MAIN STREET, DUAGH',
+'SLIEVEMORE',
+'ACHILL ISLAND',
+'MAYO',
+'F28D7P8',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'52',
+'FEARNE',
+'COTTON',
+to_date('18/11/1984', 'DD/MM/YYYY'),
+'0874512958',
+'fearnecottonbud@gmail.com',
+'1 BALLYMAHON STREET',
+'DEANSCURRAGH',
+'LONGFORD',
+'LONGFORD',
+'N39X2F1',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'53',
+'JENNY',
+'POWELL',
+to_date('08/11/1969', 'DD/MM/YYYY'),
+'0874513693',
+'powelljenny@gmail.com',
+'14 CLANBRASSIL STREET',
+'TOWNPARKS',
+'DUNDALK',
+'LOUGH',
+'A91W273',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'54',
+'PATSY',
+'RELIHAN',
+to_date('03/10/1951', 'DD/MM/YYYY'),
+'0874516963',
+'patsyrelihan@gmail.com',
+'CLONARD',
+'ENFIELD',
+'MEATH',
+'MEATH',
+'A83FN79',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'55',
+'SIOBHAN',
+'SHERRY',
+to_date('04/10/1975', 'DD/MM/YYYY'),
+'0874519604',
+'sherryshivy@gmail.com',
+'12 MARKET STREET',
+'MULLAGHMONAGHAN',
+'MONAGHAN',
+'MONAGHAN',
+'H18N772',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'56',
+'KIERAN',
+'SHERRY',
+to_date('22/10/1973', 'DD/MM/YYYY'),
+'0874518247',
+'sherryk@gmail.com',
+'12 COUSIN STREET',
+'KILCOLMAN',
+'BALLAGHADERREEN',
+'ROSCOMMON',
+'H18N772',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'57',
+'JOHN JOE',
+'GAUGHAN',
+to_date('27/12/1964', 'DD/MM/YYYY'),
+'0874513625',
+'johnjoegaughan@gmail.com',
+'28 BARRACK STREET',
+'KILCOLMAN',
+'BALLAGHADERREEN',
+'ROSCOMMON',
+'H18N772',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'58',
+'DARRAGH',
+'HARKIN',
+to_date('09/12/1985', 'DD/MM/YYYY'),
+'0874516253',
+'darraghh85@gmail.com',
+'16 STEPHEN STREET',
+'ABBEYQUARTER',
+'NORTH',
+'SLIGO',
+'F91ADK4',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'59',
+'VALERIE',
+'CORMICAN',
+to_date('16/03/1977', 'DD/MM/YYYY'),
+'0874511105',
+'corval77@gmail.com',
+'2 HIGH STREET',
+'TOWNPARKS',
+'BIRR',
+'OFFALY',
+'R42EN29',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'60',
+'JOAN',
+'SHEEHY',
+to_date('04/03/1977', 'DD/MM/YYYY'),
+'0874511417',
+'joanysheehy77@gmail.com',
+'4 OLDTOWN STREET',
+'COOKSTOWN',
+'TYRONE',
+'TYRONE',
+'R42EN29',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'61',
+'JIM',
+'BEGLIN',
+to_date('04/04/1962', 'DD/MM/YYYY'),
+'0874515528',
+'beglinjim@gmail.com',
+'18 WILLIAM STREET',
+'WATERFORD',
+'WATERFORD',
+'WATERFORD',
+'X91KX20',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'62',
+'HARRY',
+'KANE',
+to_date('04/10/1987', 'DD/MM/YYYY'),
+'0874519582',
+'oneofourown@gmail.com',
+'9 CUSTUME PLACE',
+'ATHLONE',
+'WESTMEATH',
+'WESTMEATH',
+'N37E142',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'63',
+'GLENN',
+'HODDLE',
+to_date('04/10/1952', 'DD/MM/YYYY'),
+'0874518183',
+'hodgodglenn@gmail.com',
+'37 MAIN STREET',
+'SLIPPERY GREEN',
+'WEXFORD',
+'WEXFORD',
+'Y35H725',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'64',
+'CHRIS',
+'WADDLE',
+to_date('04/07/1954', 'DD/MM/YYYY'),
+'0874519241',
+'waddlechris@gmail.com',
+'MAIN STREET',
+'BALLYGILLAROE',
+'WICKLOW',
+'WICKLOW',
+'A67H799',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'65',
+'DELE',
+'ALLI',
+to_date('04/07/1996', 'DD/MM/YYYY'),
+'0874514414',
+'deleboy@gmail.com',
+'CASTLE STREET',
+'MILLTOWN',
+'DONEGAL TOWN',
+'DONEGAL',
+'F94HP22',
+'A'
+);
+
+
+INSERT INTO Client VALUES(
+'66',
+'VINCENT',
+'SYNAN',
+to_date('18/09/1978', 'DD/MM/YYYY'),
+'0874510095',
+'vinniesynan@gmail.com',
+'8 CROSS STREET',
+'GALWAY TOWN',
+'GALWAY',
+'GALWAY',
+'H91YY06',
+'A'
+);
+
+
+INSERT INTO DJs VALUES(
+'1',
+'MARK',
+'JONES',
+TO_DATE('21/09/1992', 'DD/MM/YYYY'),
+'0871463892',
+'markjonesdj@gmail.com',
+'6 TRALEE ROAD',
+'CASTLEISLAND',
+'CASTLEISLAND',
+'KERRY',
+'V92EK74',
+'35.00',
+'A'
+);
+
+INSERT INTO DJs VALUES(
+'2',
+'PADRAIC',
+'HIGGINS',
+TO_DATE('09/02/1972', 'DD/MM/YYYY'),
+'0863792704',
+'higginspadraic72@hotmail.com',
+'8 CHURCH LAWN',
+'BLENNERVILLE',
+'TRALEE',
+'KERRY',
+'V92X3PP',
+'40.00',
+'A'
+);
+
+INSERT INTO DJs VALUES(
+'3',
+'NORMAN',
+'COOK',
+TO_DATE('28/09/1962', 'DD/MM/YYYY'),
+'0851473695',
+'fatboyslim@hotmail.com',
+'8 ROCKAFELLA AVENUE',
+'PRAISE YOU PLACE',
+'COOK TOWN',
+'KERRY',
+'V31H847',
+'40.00',
+'A'
+);
+
+INSERT INTO DJs VALUES(
+'4',
+'GERRY',
+'BYRNE',
+TO_DATE('03/09/1949', 'DD/MM/YYYY'),
+'0872534743',
+'byrnegerry49@gmail.com',
+'14 THE MANSIONS',
+'KILLARNEY',
+'KERRY',
+'KERRY',
+'V31D836',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'5',
+'PAUL',
+'CLAY',
+TO_DATE('18/01/1967', 'DD/MM/YYYY'),
+'0864576256',
+'djclay67@gmail.com',
+'28 BLANCHARD STREET',
+'FOYNES',
+'LIMERICK',
+'LIMERICK',
+'G39H027',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'6',
+'PAT',
+'DIVLEY',
+TO_DATE('15/07/1968', 'DD/MM/YYYY'),
+'0953672564',
+'divleypatdj@gmail.com',
+'97 SAILS LANE',
+'DINGLE',
+'KERRY',
+'KERRY',
+'V43S348',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'7',
+'COLM',
+'GALLAGHER',
+TO_DATE('12/10/1979', 'DD/MM/YYYY'),
+'0871706203',
+'colmg12@hotmail.co.uk',
+'THE COTTAGE, BOULA',
+'KNOCKNAGOSHEL',
+'KERRY',
+'KERRY',
+'V31D928',
+'40.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'8',
+'MIKE',
+'KELLIHER',
+TO_DATE('09/03/1974', 'DD/MM/YYYY'),
+'0871549638',
+'djfatz@gmail.com',
+'10 FEALE DRIVE',
+'LISTOWEL',
+'KERRY',
+'KERRY',
+'V38F274',
+'20.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'9',
+'PHIL',
+'O''NEILL',
+TO_DATE('28/04/1988', 'DD/MM/YYYY'),
+'0864792681',
+'phylio@hotmail.com',
+'18 LANSDOWNE ROAD',
+'ABBEYFEALE',
+'LIMERICK',
+'LIMERICK',
+'V93M384',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'10',
+'PAUL',
+'PENDALL',
+TO_DATE('02/08/1965', 'DD/MM/YYYY'),
+'0871694538',
+'djpaulpendall@hotmail.com',
+'94 MUSWELL AVENUE',
+'TARBERT',
+'KERRY',
+'KERRY',
+'V27D278',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'11',
+'SAMMY',
+'PORTER',
+TO_DATE('23/12/1993', 'DD/MM/YYYY'),
+'0877296348',
+'sammyp93@gmail.com',
+'3 THE GARDENS',
+'KNOCKNAGREE',
+'CORK',
+'CORK',
+'L37S389',
+'35.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'12',
+'MIKE',
+'O''NEILL',
+TO_DATE('14/06/1983', 'DD/MM/YYYY'),
+'0871543924',
+'djmikeoneill@gmail.com',
+'58 LADYWELL',
+'ENNIS',
+'CLARE',
+'CLARE',
+'C93J237',
+'20.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'13',
+'PETE',
+'TONG',
+TO_DATE('06/12/1964', 'DD/MM/YYYY'),
+'0875216349',
+'tongy@gmail.com',
+'TONG STREET',
+'TONG TOWN',
+'TONG CITY',
+'CORK',
+'C89H387',
+'40.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'14',
+'ELVIS',
+'GALLAGHER',
+TO_DATE('06/12/2000', 'DD/MM/YYYY'),
+'0865487412',
+'elvis@catmail.com',
+'CAT AVENUE',
+'CAT TOWN',
+'CAT CITY',
+'DONEGAL',
+'A98J853',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'15',
+'MICKEY',
+'PURCELL',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865487458',
+'mp@gmail.com',
+'CATFORD DRIVE',
+'CATFORD TOWN',
+'CATFORD CITY',
+'KERRY',
+'A98J853',
+'30.00',
+'W'
+);
+
+INSERT INTO DJS VALUES(
+'16',
+'PADDY',
+'MCGUINNESS',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865481475',
+'paddymc2000@gmail.com',
+'12 EAGRALOUGHER ROAD',
+'LOUGHGALL',
+'ARMAGH',
+'ARMAGH',
+'A59D948',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'17',
+'RAY',
+'PURCELL',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865481475',
+'raypurcell@gmail.com',
+'MAIN STREET',
+'CASTLEBAR',
+'MAYO',
+'MAYO',
+'A59D948',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'18',
+'NICK',
+'FERRARI',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865481426',
+'ferrarinick@gmail.com',
+'20 GRANGE ROAD',
+'TOOMEBRIDGE',
+'ANTRIM',
+'ANTRIM',
+'A59D948',
+'20.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'19',
+'LISA',
+'NANDY',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865487799',
+'nandygirl@gmail.com',
+'24 COLLEGE STREET',
+'GRAIGUE',
+'CARLOW',
+'CARLOW',
+'R93H4F8',
+'20.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'20',
+'ADELE',
+'ADKINS',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865481148',
+'adeledrill@gmail.com',
+'48 LISSYCASEY',
+'ENNIS',
+'CLARE',
+'CLARE',
+'V95DX08',
+'40.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'21',
+'DAVID',
+'QUIGLEY',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865481569',
+'quigs2000@gmail.com',
+'234 OLIVER PLUNKETT STREET',
+'CENTRE',
+'CORK',
+'CORK',
+'T12P957',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'22',
+'JOHN',
+'WHITE',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865483537',
+'white2000@gmail.com',
+'12 DUBLIN ROAD',
+'KILLYGARRY',
+'CAVAN',
+'CAVAN',
+'H12V207',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'23',
+'PAUL',
+'FRENCH',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865487741',
+'frenchy2000@gmail.com',
+'243 STRAND ROAD',
+'DERRY TOWN',
+'DERRY',
+'DERRY',
+'H12V248',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'24',
+'RICHARD',
+'GAYLE',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865484569',
+'richieg2000@gmail.com',
+'290 UPPER CHURCH STREET',
+'TOWN LOT',
+'TIPPERARY',
+'TIPPERARY',
+'E34XK53',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'25',
+'KEVIN',
+'COGHIL',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865489852',
+'cogkev2000@gmail.com',
+'29 THE HEIGHTS',
+'DOWNPATRICK',
+'DOWN',
+'DOWN',
+'E34XK27',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'26',
+'PAUL',
+'BECKER',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865481468',
+'becks2000@gmail.com',
+'810 TALBOT STREET',
+'DOWNTOWN',
+'NORTH CITY',
+'DUBLIN',
+'D02TW84',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'27',
+'JAMIE',
+'DEVON',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865484759',
+'jamiedev2000@gmail.com',
+'12 DAME STREET',
+'DOWNTOWN',
+'NORTH CITY',
+'DUBLIN',
+'D02TW84',
+'20.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'28',
+'MATTHEW',
+'BYRNE',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865484759',
+'mattyb2000@gmail.com',
+'1 BAGGOT STREET LOWER',
+'DOWNTOWN',
+'DUBLIN',
+'DUBLIN',
+'D02TW84',
+'20.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'29',
+'PATRICK',
+'ARMSTRONG',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865489985',
+'paddyarmstrong@gmail.com',
+'390 FENIAN STREET',
+'DUBLIN 2',
+'DUBLIN',
+'DUBLIN',
+'D02KD51',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'30',
+'RUSSELL',
+'HAYES',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865480487',
+'hayesruss@gmail.com',
+'4 TEMPLE BAR',
+'DUBLIN',
+'DUBLIN',
+'DUBLIN',
+'D02N725',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'31',
+'PETER',
+'MCGHEE',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'08654807712',
+'mcpetey@gmail.com',
+'306 HARCOURT STREET',
+'SAINT KEVIN''S',
+'DUBLIN 2',
+'DUBLIN',
+'D02XV58',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'32',
+'PATRICK',
+'RIORDAN',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'08654804485',
+'paballyb@gmail.com',
+'339 OLD SLIGO ROAD',
+'ENNISKILLEN',
+'FERMANAGH',
+'FERMANAGH',
+'V92EK74',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'33',
+'PETE',
+'MCCAFFERTY',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'08654800025',
+'petemc@gmail.com',
+'28 SEA ROAD',
+'GALWAY TOWN',
+'GALWAY',
+'GALWAY',
+'H91YY06',
+'20.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'34',
+'TRACEY',
+'BROSNAN',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'08654807787',
+'traceyb@gmail.com',
+'88 CROSS STREET',
+'GALWAY TOWN',
+'GALWAY',
+'GALWAY',
+'H91YY06',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'35',
+'ETHAN FINN',
+'POWER',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'08654801141',
+'ethanfinnpower@gmail.com',
+'52 SULLIVAN''S QUAY',
+'CENTRE',
+'CORK',
+'CORK',
+'T12H771',
+'40.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'36',
+'KAREN',
+'POWER',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'08654807785',
+'karenpower@gmail.com',
+'1969 CUTBUSH',
+'BALLYFAIR',
+'THE CURRAGH',
+'KILDARE',
+'R56Y522',
+'40.00',
+'A'
+);
+    
+INSERT INTO DJS VALUES(
+'37',
+'MAURICE',
+'O''CONNOR',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'08654804474',
+'mossycon@gmail.com',
+'38 FRIARY STREET',
+'GARDENS',
+'KILKENNY CITY',
+'KILKENNY',
+'R95X932',
+'35.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'38',
+'AIDAN',
+'O''CONNOR',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'08654800360',
+'aidycon@gmail.com',
+'56 GREATHEATH',
+'PORTLAOISE',
+'LAOIS',
+'LAOIS',
+'R32X803',
+'35.00',
+'A'
+);
+ 
+INSERT INTO DJS VALUES(
+'39',
+'PATRICK',
+'LYNCH',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'08654805559',
+'paddylynch@gmail.com',
+'48 MAIN STREET',
+'TULLYLANNAN',
+'LEITRIM VILLAGE',
+'LEITRIM',
+'N41KX81',
+'20.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'40',
+'TIMMY',
+'NOLAN',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'086548057743',
+'timmynolan@gmail.com',
+'520 O''CONNELL STREET',
+'LIMERICK',
+'LIMERICK CITY',
+'LIMERICK',
+'V94NYH9',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'41',
+'JACK',
+'NOLAN',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'086548050040',
+'jacknolan@gmail.com',
+'THE BEAUTY RIVER',
+'DOOKINELLA',
+'ACHILL ISLAND',
+'MAYO',
+'F28D7P8',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'42',
+'JACK',
+'LYNCH',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'086548054415',
+'jacklynch@gmail.com',
+'44 BRIDGE STREET',
+'CAHERNAMART',
+'WESTPORT',
+'MAYO',
+'F28A298',
+'20.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'43',
+'PAUDIE',
+'COSTELLO',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'086548051203',
+'paudiecosht@gmail.com',
+'140 CLANBRASSIL STREET',
+'TOWNPARKS',
+'DUNDALK',
+'LOUGH',
+'A91W273',
+'35.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'44',
+'LOUISE',
+'DUFFY',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'086548051203',
+'duffster@gmail.com',
+'111 BALLYMAHON STREET',
+'DEANSCURRAGH',
+'LONGFORD',
+'LONGFORD',
+'N39X2F1',
+'20.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'45',
+'ROBERT',
+'DOWNEY',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865484585',
+'downeyjnrrob@gmail.com',
+'45 THE CLONARD',
+'ENFIELD',
+'MEATH',
+'MEATH',
+'A83FN79',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'46',
+'STEVE',
+'AUSTIN',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865481102',
+'stonecold@gmail.com',
+'120 MARKET STREET',
+'MULLAGHMONAGHAN',
+'MONAGHAN',
+'MONAGHAN',
+'H18N772',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'47',
+'DEAN',
+'AMBROSE',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865480078',
+'deanambrose@gmail.com',
+'21 BARRACK STREET',
+'KILCOLMAN',
+'BALLAGHADERREEN',
+'ROSCOMMON',
+'H18N772',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'48',
+'ROMAN',
+'REIGNS',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865486696',
+'reignssupreme@gmail.com',
+'160 STEPHEN STREET',
+'ABBEYQUARTER',
+'NORTH',
+'SLIGO',
+'F91ADK4',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'49',
+'SETH',
+'ROLLINS',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865483696',
+'architectseth@gmail.com',
+'24 HIGH STREET',
+'TOWNPARKS',
+'BIRR',
+'OFFALY',
+'R42EN29',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'50',
+'RANDY',
+'SAVAGE',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865480045',
+'machoman@gmail.com',
+'40 OLDTOWN STREET',
+'COOKSTOWN',
+'TYRONE',
+'TYRONE',
+'R42EN29',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'51',
+'LANNY',
+'POFFO',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865480089',
+'geniuslanny@gmail.com',
+'180 WILLIAM STREET',
+'WATERFORD',
+'WATERFORD',
+'WATERFORD',
+'X91KX20',
+'25.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'52',
+'CURT',
+'HENNIG',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865486698',
+'mrperfect@gmail.com',
+'99 CUSTUME PLACE',
+'ATHLONE',
+'WESTMEATH',
+'WESTMEATH',
+'N37E142',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'53',
+'SHAWN',
+'MICHAELS',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865488797',
+'showstoppershawn@gmail.com',
+'370 MAIN STREET',
+'SLIPPERY GREEN',
+'WEXFORD',
+'WEXFORD',
+'Y35H725',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'54',
+'KURT',
+'ANGLE',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865481664',
+'olympichero@gmail.com',
+'78 MAIN STREET',
+'BALLYGILLAROE',
+'WICKLOW',
+'WICKLOW',
+'A67H799',
+'30.00',
+'A'
+);
+
+INSERT INTO DJS VALUES(
+'55',
+'KOFI',
+'KINGSTON',
+TO_DATE('02/02/2000', 'DD/MM/YYYY'),
+'0865487777',
+'bootieos@gmail.com',
+'456 CASTLE STREET',
+'MILLTOWN',
+'DONEGAL TOWN',
+'DONEGAL',
+'F94HP22',
+'25.00',
+'A'
+);
+    
+    
+INSERT INTO DJS VALUES(
+'56',
+'GRAHAM',
+'NORTON',
+TO_DATE('02/12/1968', 'DD/MM/YYYY'),
+'0865480080',
+'gnorton@bbc.com',
+'4 WINTHROP STREET',
+'CENTRE',
+'CORK',
+'CORK',
+'T12Y299',
+'999.00',
+'A'
+);
+    
+    
+INSERT INTO DJS VALUES(
+'57',
+'SHANE',
+'MACGOWAN',
+TO_DATE('25/12/1957', 'DD/MM/YYYY'),
+'0865481881',
+'shanemac@gmail.com',
+'12 CLONMEL ROAD',
+'KNOCKANRAWLEY',
+'TIPPERARY',
+'TIPPERARY',
+'E34YT18',
+'750.00',
+'A'
+);
+    
+    
+INSERT INTO DJS VALUES(
+'58',
+'KELLY ANN',
+'BYRNE',
+TO_DATE('28/12/1987', 'DD/MM/YYYY'),
+'0865484664',
+'kellyannebyrne87@gmail.com',
+'11 MCKEE AVENUE',
+'FINGLAS EAST',
+'DUBLIN 11',
+'DUBLIN',
+'D11P7FR',
+'250.00',
+'A'
+);
+    
+    
+INSERT INTO DJS VALUES(
+'59',
+'ROBBIE',
+'KEANE',
+TO_DATE('12/10/1980', 'DD/MM/YYYY'),
+'0865489994',
+'keanorobbie80@gmail.com',
+'68 BALLYGALL ROAD EAST',
+'BALLYGALL',
+'DUBLIN 11',
+'DUBLIN',
+'D11TY32',
+'500.00',
+'A'
+);
+    
+    
+INSERT INTO SERVICES VALUES(
+'ANVY',
+'ANNIVERSARY',
+'240.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'BARM',
+'BAR MITZVAH',
+'240.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'BDAY',
+'BIRTHDAY',
+'240.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'CLUB',
+'NIGHTCLUB',
+'360.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'CORP',
+'CORPORATE',
+'510.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'CRIS',
+'CHRISTENING',
+'240.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'HALO',
+'HALLOWEEN',
+'300.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'NYEV',
+'NEW YEARS EVE',
+'600.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'PBAR',
+'PUBLIC BAR',
+'270.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'PRFU',
+'PRIVATE FUNCTION',
+'240.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'STPD',
+'ST. PATRICK''S DAY',
+'600.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'WEDD',
+'WEDDING',
+'540.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'XMAS',
+'CHRISTMAS',
+'600.00',
+'A'
+);
+
+INSERT INTO SERVICES VALUES(
+'KARK',
+'KARAOKE',
+'280.00',
+'A'
+);
+    
+INSERT INTO SERVICES VALUES(
+'IRIS',
+'IRISH',
+'250.00',
+'A'
+);
+    
+INSERT INTO SERVICES VALUES(
+'CLEB',
+'CELEBRITY DJ',
+'999.00',
+'A'
+);
+
+
+
+INSERT INTO BOOKINGS VALUES(
+'1',
+TO_DATE('14/03/2019', 'DD/MM/YYYY'),
+TO_DATE('28/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'THE CUBE, KILLARNEY, KERRY',
+'V31D949',
+'775.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'1',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'2',
+TO_DATE('17/03/2019', 'DD/MM/YYYY'),
+TO_DATE('14/10/2019', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'THE CUBE, KILLARNEY, KERRY',
+'V31D949',
+'500.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'1',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'3',
+TO_DATE('14/02/2019', 'DD/MM/YYYY'),
+TO_DATE('28/08/2019', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'THE CUBE, KILLARNEY, KERRY',
+'V31D949',
+'535.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'1',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'4',
+TO_DATE('04/03/2019', 'DD/MM/YYYY'),
+TO_DATE('28/12/2019', 'DD/MM/YYYY'),
+'20:00',
+'02:00',
+'6',
+'THE CUBE, KILLARNEY, KERRY',
+'V31D949',
+'750.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'9',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'5',
+TO_DATE('10/01/2019', 'DD/MM/YYYY'),
+TO_DATE('26/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'04:00',
+'7',
+'THE CUBE, KILLARNEY, KERRY',
+'V31D949',
+'880.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'2',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'6',
+TO_DATE('10/02/2019', 'DD/MM/YYYY'),
+TO_DATE('26/06/2019', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'THE GRAND, KILLARNEY, KERRY',
+'V31D814',
+'400.00',
+'P',
+'0',
+'0.00',
+'A',
+'1',
+'2',
+'ANVY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'7',
+TO_DATE('10/01/2019', 'DD/MM/YYYY'),
+TO_DATE('26/09/2019', 'DD/MM/YYYY'),
+'20:00',
+'01:00',
+'5',
+'THE GRAND, KILLARNEY, KERRY',
+'V31D814',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'1',
+'3',
+'BDAY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'8',
+TO_DATE('10/01/2019', 'DD/MM/YYYY'),
+TO_DATE('12/11/2019', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'THE GRAND, KILLARNEY, KERRY',
+'V31D814',
+'480.00',
+'P',
+'0',
+'0.00',
+'A',
+'1',
+'6',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'9',
+TO_DATE('16/01/2019', 'DD/MM/YYYY'),
+TO_DATE('26/12/2019', 'DD/MM/YYYY'),
+'20:00',
+'03:00',
+'7',
+'THE GRAND, KILLARNEY, KERRY',
+'V31D814',
+'880.00',
+'P',
+'0',
+'0.00',
+'A',
+'1',
+'7',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'10',
+TO_DATE('10/03/2019', 'DD/MM/YYYY'),
+TO_DATE('31/10/2019', 'DD/MM/YYYY'),
+'20:00',
+'02:00',
+'6',
+'THE GRAND, KILLARNEY, KERRY',
+'V31D814',
+'540.00',
+'P',
+'0',
+'0.00',
+'A',
+'1',
+'7',
+'HALO'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'11',
+TO_DATE('04/01/2019', 'DD/MM/YYYY'),
+TO_DATE('15/06/2019', 'DD/MM/YYYY'),
+'16:00',
+'21:00',
+'5',
+'O''NEILLS, LISTOWEL, KERRY',
+'V31TP48',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'2',
+'2',
+'BARM'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'12',
+TO_DATE('08/02/2019', 'DD/MM/YYYY'),
+TO_DATE('26/11/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'O''NEILLS, LISTOWEL, KERRY',
+'V31TP48',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'2',
+'4',
+'BDAY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'13',
+TO_DATE('12/03/2019', 'DD/MM/YYYY'),
+TO_DATE('03/07/2019', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'O''NEILLS, LISTOWEL, KERRY',
+'V31TP48',
+'540.00',
+'P',
+'0',
+'0.00',
+'A',
+'2',
+'5',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'14',
+TO_DATE('25/01/2019', 'DD/MM/YYYY'),
+TO_DATE('18/07/2019', 'DD/MM/YYYY'),
+'18:00',
+'23:00',
+'5',
+'O''NEILLS, LISTOWEL, KERRY',
+'V31TP48',
+'610.00',
+'P',
+'0',
+'0.00',
+'A',
+'2',
+'8',
+'CORP'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'15',
+TO_DATE('26/02/2019', 'DD/MM/YYYY'),
+TO_DATE('08/06/2019', 'DD/MM/YYYY'),
+'14:00',
+'20:00',
+'6',
+'O''NEILLS, LISTOWEL, KERRY',
+'V31TP48',
+'450.00',
+'P',
+'0',
+'0.00',
+'A',
+'2',
+'11',
+'CRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'16',
+TO_DATE('10/01/2019', 'DD/MM/YYYY'),
+TO_DATE('24/10/2019', 'DD/MM/YYYY'),
+'21:00',
+'00:00',
+'3',
+'HARKINS, TRALEE, KERRY',
+'V31S657',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'2',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'17',
+TO_DATE('18/03/2019', 'DD/MM/YYYY'),
+TO_DATE('31/12/2019', 'DD/MM/YYYY'),
+'19:00',
+'03:00',
+'8',
+'HARKINS, TRALEE, KERRY',
+'V31S657',
+'920.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'3',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'18',
+TO_DATE('10/02/2019', 'DD/MM/YYYY'),
+TO_DATE('06/10/2019', 'DD/MM/YYYY'),
+'21:00',
+'00:00',
+'3',
+'HARKINS, TRALEE, KERRY',
+'V31S657',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'2',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'19',
+TO_DATE('29/01/2019', 'DD/MM/YYYY'),
+TO_DATE('17/07/2019', 'DD/MM/YYYY'),
+'19:00',
+'00:00',
+'5',
+'HARKINS, TRALEE, KERRY',
+'V31S657',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'7',
+'PRFU'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'20',
+TO_DATE('10/03/2019', 'DD/MM/YYYY'),
+TO_DATE('24/09/2019', 'DD/MM/YYYY'),
+'21:00',
+'00:00',
+'3',
+'HARKINS, TRALEE, KERRY',
+'V31S657',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'2',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'21',
+TO_DATE('21/01/2019', 'DD/MM/YYYY'),
+TO_DATE('24/08/2019', 'DD/MM/YYYY'),
+'15:00',
+'20:00',
+'5',
+'SCRUFFYS, KILLARNEY, KERRY',
+'V93R74H',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'3',
+'BARM'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'22',
+TO_DATE('22/02/2019', 'DD/MM/YYYY'),
+TO_DATE('14/06/2019', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'SCRUFFYS, KILLARNEY, KERRY',
+'V93R74H',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'4',
+'ANVY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'23',
+TO_DATE('23/03/2019', 'DD/MM/YYYY'),
+TO_DATE('04/07/2019', 'DD/MM/YYYY'),
+'14:00',
+'20:00',
+'6',
+'SCRUFFYS, KILLARNEY, KERRY',
+'V93R74H',
+'420.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'4',
+'CRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'24',
+TO_DATE('11/01/2019', 'DD/MM/YYYY'),
+TO_DATE('30/10/2019', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'SCRUFFYS, KILLARNEY, KERRY',
+'V93R74H',
+'400.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'12',
+'HALO'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'25',
+TO_DATE('31/01/2019', 'DD/MM/YYYY'),
+TO_DATE('31/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'SCRUFFYS, KILLARNEY, KERRY',
+'V93R74H',
+'810.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'11',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'26',
+TO_DATE('30/01/2019', 'DD/MM/YYYY'),
+TO_DATE('31/08/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'RIVER ISLAND HOTEL, LOWER MAIN ST, CHAPEL QUARTER, CASTLEISLAND, KERRY',
+'V92HWN0',
+'500.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'1',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'27',
+TO_DATE('23/01/2019', 'DD/MM/YYYY'),
+TO_DATE('31/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'RIVER ISLAND HOTEL, LOWER MAIN ST, CHAPEL QUARTER, CASTLEISLAND, KERRY',
+'V92HWN0',
+'750.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'9',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'28',
+TO_DATE('09/02/2019', 'DD/MM/YYYY'),
+TO_DATE('02/09/2019', 'DD/MM/YYYY'),
+'20:00',
+'23:00',
+'3',
+'RIVER ISLAND HOTEL, LOWER MAIN ST, CHAPEL QUARTER, CASTLEISLAND, KERRY',
+'V92HWN0',
+'385.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'1',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'29',
+TO_DATE('08/01/2019', 'DD/MM/YYYY'),
+TO_DATE('26/07/2019', 'DD/MM/YYYY'),
+'20:00',
+'02:00',
+'6',
+'RIVER ISLAND HOTEL, LOWER MAIN ST, CHAPEL QUARTER, CASTLEISLAND, KERRY',
+'V92HWN0',
+'690.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'9',
+'WEDD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'30',
+TO_DATE('13/03/2019', 'DD/MM/YYYY'),
+TO_DATE('17/03/2020', 'DD/MM/YYYY'),
+'19:00',
+'01:00',
+'6',
+'RIVER ISLAND HOTEL, LOWER MAIN ST, CHAPEL QUARTER, CASTLEISLAND, KERRY',
+'V92HWN0',
+'840.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'7',
+'STPD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'31',
+TO_DATE('13/02/2019', 'DD/MM/YYYY'),
+TO_DATE('17/06/2019', 'DD/MM/YYYY'),
+'19:00',
+'22:00',
+'3',
+'PARK HOUSE HOTEL, 50 MAIN ST, EDGEWORTHSTOWN, CO. LONGFORD',
+'N39F5C3',
+'300.00',
+'P',
+'0',
+'0.00',
+'A',
+'4',
+'12',
+'ANVY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'32',
+TO_DATE('23/03/2019', 'DD/MM/YYYY'),
+TO_DATE('17/03/2020', 'DD/MM/YYYY'),
+'19:00',
+'01:00',
+'6',
+'PARK HOUSE HOTEL, 50 MAIN ST, EDGEWORTHSTOWN, CO. LONGFORD',
+'N39F5C3',
+'780.00',
+'P',
+'0',
+'0.00',
+'A',
+'4',
+'5',
+'STPD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'33',
+TO_DATE('03/03/2019', 'DD/MM/YYYY'),
+TO_DATE('17/08/2019', 'DD/MM/YYYY'),
+'20:00',
+'00:00',
+'4',
+'PARK HOUSE HOTEL, 50 MAIN ST, EDGEWORTHSTOWN, CO. LONGFORD',
+'N39F5C3',
+'320.00',
+'P',
+'0',
+'0.00',
+'A',
+'4',
+'12',
+'BDAY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'34',
+TO_DATE('18/02/2019', 'DD/MM/YYYY'),
+TO_DATE('27/11/2019', 'DD/MM/YYYY'),
+'19:00',
+'00:00',
+'5',
+'PARK HOUSE HOTEL, 50 MAIN ST, EDGEWORTHSTOWN, CO. LONGFORD',
+'N39F5C3',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'4',
+'3',
+'ANVY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'35',
+TO_DATE('17/02/2019', 'DD/MM/YYYY'),
+TO_DATE('21/02/2020', 'DD/MM/YYYY'),
+'19:00',
+'02:00',
+'7',
+'PARK HOUSE HOTEL, 50 MAIN ST, EDGEWORTHSTOWN, CO. LONGFORD',
+'N39F5C3',
+'680.00',
+'P',
+'0',
+'0.00',
+'A',
+'4',
+'12',
+'WEDD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'36',
+TO_DATE('18/01/2019', 'DD/MM/YYYY'),
+TO_DATE('28/11/2019', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'RUBY''S NIGHTCLUB, KILMANIHEEN, KILMANIHAN WEST, CO. KERRY',
+'V92HN5H',
+'460.00',
+'P',
+'0',
+'0.00',
+'A',
+'5',
+'9',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'37',
+TO_DATE('18/02/2019', 'DD/MM/YYYY'),
+TO_DATE('27/10/2019', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'RUBY''S NIGHTCLUB, KILMANIHEEN, KILMANIHAN WEST, CO. KERRY',
+'V92HN5H',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'5',
+'8',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'38',
+TO_DATE('08/02/2019', 'DD/MM/YYYY'),
+TO_DATE('07/11/2019', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'RUBY''S NIGHTCLUB, KILMANIHEEN, KILMANIHAN WEST, CO. KERRY',
+'V92HN5H',
+'460.00',
+'P',
+'0',
+'0.00',
+'A',
+'5',
+'9',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'39',
+TO_DATE('18/02/2019', 'DD/MM/YYYY'),
+TO_DATE('27/12/2019', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'RUBY''S NIGHTCLUB, KILMANIHEEN, KILMANIHAN WEST, CO. KERRY',
+'V92HN5H',
+'680.00',
+'P',
+'0',
+'0.00',
+'A',
+'5',
+'8',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'40',
+TO_DATE('18/02/2019', 'DD/MM/YYYY'),
+TO_DATE('29/12/2019', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'RUBY''S NIGHTCLUB, KILMANIHEEN, KILMANIHAN WEST, CO. KERRY',
+'V92HN5H',
+'760.00',
+'P',
+'0',
+'0.00',
+'A',
+'5',
+'7',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'41',
+TO_DATE('12/02/2019', 'DD/MM/YYYY'),
+TO_DATE('29/10/2019', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'THE MERMAIDS NIGHT CLUB, 47 WILLIAM STREET, LISTOWEL, CO. KERRY',
+'V31P499',
+'480.00',
+'P',
+'0',
+'0.00',
+'A',
+'6',
+'8',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'42',
+TO_DATE('18/03/2019', 'DD/MM/YYYY'),
+TO_DATE('29/09/2019', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'THE MERMAIDS NIGHT CLUB, 47 WILLIAM STREET, LISTOWEL, CO. KERRY',
+'V31P499',
+'600.00',
+'P',
+'0',
+'0.00',
+'A',
+'6',
+'3',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'43',
+TO_DATE('28/02/2019', 'DD/MM/YYYY'),
+TO_DATE('29/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'THE MERMAIDS NIGHT CLUB, 47 WILLIAM STREET, LISTOWEL, CO. KERRY',
+'V31P499',
+'780.00',
+'P',
+'0',
+'0.00',
+'A',
+'6',
+'6',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'44',
+TO_DATE('18/02/2019', 'DD/MM/YYYY'),
+TO_DATE('30/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'THE MERMAIDS NIGHT CLUB, 47 WILLIAM STREET, LISTOWEL, CO. KERRY',
+'V31P499',
+'750.00',
+'P',
+'0',
+'0.00',
+'A',
+'6',
+'10',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'45',
+TO_DATE('18/02/2019', 'DD/MM/YYYY'),
+TO_DATE('31/12/2019', 'DD/MM/YYYY'),
+'20:00',
+'05:00',
+'9',
+'THE MERMAIDS NIGHT CLUB, 47 WILLIAM STREET, LISTOWEL, CO. KERRY',
+'V31P499',
+'960.00',
+'P',
+'0',
+'0.00',
+'A',
+'6',
+'7',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'46',
+TO_DATE('04/03/2019', 'DD/MM/YYYY'),
+TO_DATE('31/07/2019', 'DD/MM/YYYY'),
+'17:00',
+'22:00',
+'5',
+'KNOCKNAGOSHEL COMMUNITY CENTRE, KNOCKNAGOSHEL, CO. KERRY',
+'V92WV70',
+'365.00',
+'P',
+'0',
+'0.00',
+'A',
+'7',
+'9',
+'PRFU'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'47',
+TO_DATE('08/03/2019', 'DD/MM/YYYY'),
+TO_DATE('31/08/2019', 'DD/MM/YYYY'),
+'12:00',
+'20:00',
+'8',
+'KNOCKNAGOSHEL COMMUNITY CENTRE, KNOCKNAGOSHEL, CO. KERRY',
+'V92WV70',
+'480.00',
+'P',
+'0',
+'0.00',
+'A',
+'7',
+'4',
+'CRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'48',
+TO_DATE('28/02/2019', 'DD/MM/YYYY'),
+TO_DATE('29/09/2019', 'DD/MM/YYYY'),
+'13:00',
+'18:00',
+'5',
+'KNOCKNAGOSHEL COMMUNITY CENTRE, KNOCKNAGOSHEL, CO. KERRY',
+'V92WV70',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'7',
+'5',
+'CRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'49',
+TO_DATE('26/02/2019', 'DD/MM/YYYY'),
+TO_DATE('22/06/2019', 'DD/MM/YYYY'),
+'20:00',
+'22:00',
+'2',
+'KNOCKNAGOSHEL COMMUNITY CENTRE, KNOCKNAGOSHEL, CO. KERRY',
+'V92WV70',
+'290.00',
+'P',
+'0',
+'0.00',
+'A',
+'7',
+'9',
+'PRFU'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'50',
+TO_DATE('14/03/2019', 'DD/MM/YYYY'),
+TO_DATE('17/07/2019', 'DD/MM/YYYY'),
+'14:00',
+'17:00',
+'3',
+'KNOCKNAGOSHEL COMMUNITY CENTRE, KNOCKNAGOSHEL, CO. KERRY',
+'V92WV70',
+'315.00',
+'P',
+'0',
+'0.00',
+'A',
+'7',
+'9',
+'BARM'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'51',
+TO_DATE('14/03/2019', 'DD/MM/YYYY'),
+TO_DATE('17/03/2020', 'DD/MM/YYYY'),
+'20:00',
+'02:00',
+'6',
+'MCSORLEY''S, 10 COLLEGE STREET, KILLARNEY, CO. KERRY',
+'V93WP65',
+'810.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'11',
+'STPD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'52',
+TO_DATE('24/03/2019', 'DD/MM/YYYY'),
+TO_DATE('31/10/2019', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'MCSORLEY''S, 10 COLLEGE STREET, KILLARNEY, CO. KERRY',
+'V93WP65',
+'475.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'11',
+'HALO'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'53',
+TO_DATE('04/03/2019', 'DD/MM/YYYY'),
+TO_DATE('17/07/2019', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'MCSORLEY''S, 10 COLLEGE STREET, KILLARNEY, CO. KERRY',
+'V93WP65',
+'560.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'2',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'54',
+TO_DATE('18/03/2019', 'DD/MM/YYYY'),
+TO_DATE('27/07/2019', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'MCSORLEY''S, 10 COLLEGE STREET, KILLARNEY, CO. KERRY',
+'V93WP65',
+'560.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'2',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'55',
+TO_DATE('28/03/2019', 'DD/MM/YYYY'),
+TO_DATE('17/09/2019', 'DD/MM/YYYY'),
+'19:00',
+'22:00',
+'3',
+'MCSORLEY''S, 10 COLLEGE STREET, KILLARNEY, CO. KERRY',
+'V93WP65',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'4',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'56',
+TO_DATE('28/02/2019', 'DD/MM/YYYY'),
+TO_DATE('17/08/2019', 'DD/MM/YYYY'),
+'20:00',
+'01:00',
+'5',
+'THE HEIGHTS HOTEL KILLARNEY, CORK ROAD, BALLYCASHEEN, KILLARNEY, CO. KERRY',
+'V93XKR4',
+'740.00',
+'P',
+'0',
+'0.00',
+'A',
+'9',
+'7',
+'WEDD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'57',
+TO_DATE('20/03/2019', 'DD/MM/YYYY'),
+TO_DATE('17/09/2019', 'DD/MM/YYYY'),
+'20:00',
+'01:00',
+'5',
+'THE HEIGHTS HOTEL KILLARNEY, CORK ROAD, BALLYCASHEEN, KILLARNEY, CO. KERRY',
+'V93XKR4',
+'340.00',
+'P',
+'0',
+'0.00',
+'A',
+'9',
+'12',
+'PRFU'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'58',
+TO_DATE('14/03/2019', 'DD/MM/YYYY'),
+TO_DATE('14/09/2019', 'DD/MM/YYYY'),
+'20:00',
+'01:00',
+'5',
+'THE HEIGHTS HOTEL KILLARNEY, CORK ROAD, BALLYCASHEEN, KILLARNEY, CO. KERRY',
+'V93XKR4',
+'690.00',
+'P',
+'0',
+'0.00',
+'A',
+'9',
+'4',
+'WEDD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'59',
+TO_DATE('06/02/2019', 'DD/MM/YYYY'),
+TO_DATE('11/06/2019', 'DD/MM/YYYY'),
+'17:00',
+'20:00',
+'3',
+'THE HEIGHTS HOTEL KILLARNEY, CORK ROAD, BALLYCASHEEN, KILLARNEY, CO. KERRY',
+'V93XKR4',
+'600.00',
+'P',
+'0',
+'0.00',
+'A',
+'9',
+'6',
+'CORP'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'60',
+TO_DATE('22/02/2019', 'DD/MM/YYYY'),
+TO_DATE('05/07/2019', 'DD/MM/YYYY'),
+'20:00',
+'01:00',
+'5',
+'THE HEIGHTS HOTEL KILLARNEY, CORK ROAD, BALLYCASHEEN, KILLARNEY, CO. KERRY',
+'V93XKR4',
+'690.00',
+'P',
+'0',
+'0.00',
+'A',
+'9',
+'4',
+'WEDD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'61',
+TO_DATE('21/02/2019', 'DD/MM/YYYY'),
+TO_DATE('03/07/2019', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'THE SAILOR''S BAR, KILLAHA WEST, KENMARE, CO. KERRY',
+'V93VY24',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'10',
+'4',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'62',
+TO_DATE('21/02/2019', 'DD/MM/YYYY'),
+TO_DATE('11/07/2019', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'THE SAILOR''S BAR, KILLAHA WEST, KENMARE, CO. KERRY',
+'V93VY24',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'10',
+'5',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'63',
+TO_DATE('21/02/2019', 'DD/MM/YYYY'),
+TO_DATE('25/07/2019', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'THE SAILOR''S BAR, KILLAHA WEST, KENMARE, CO. KERRY',
+'V93VY24',
+'400.00',
+'P',
+'0',
+'0.00',
+'A',
+'10',
+'6',
+'KARK'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'64',
+TO_DATE('21/02/2019', 'DD/MM/YYYY'),
+TO_DATE('05/08/2019', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'THE SAILOR''S BAR, KILLAHA WEST, KENMARE, CO. KERRY',
+'V93VY24',
+'400.00',
+'P',
+'0',
+'0.00',
+'A',
+'10',
+'4',
+'KARK'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'65',
+TO_DATE('21/02/2019', 'DD/MM/YYYY'),
+TO_DATE('05/09/2019', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'THE SAILOR''S BAR, KILLAHA WEST, KENMARE, CO. KERRY',
+'V93VY24',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'10',
+'5',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'66',
+TO_DATE('11/02/2019', 'DD/MM/YYYY'),
+TO_DATE('15/06/2019', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'JOHN B KEANE, 37 WILLIAM ST, LISTOWEL, CO. KERRY',
+'V31RC03',
+'350.00',
+'P',
+'0',
+'0.00',
+'A',
+'11',
+'8',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'67',
+TO_DATE('01/02/2019', 'DD/MM/YYYY'),
+TO_DATE('15/07/2019', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'JOHN B KEANE, 37 WILLIAM ST, LISTOWEL, CO. KERRY',
+'V31RC03',
+'430.00',
+'P',
+'0',
+'0.00',
+'A',
+'11',
+'7',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'68',
+TO_DATE('21/03/2019', 'DD/MM/YYYY'),
+TO_DATE('15/08/2019', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'JOHN B KEANE, 37 WILLIAM ST, LISTOWEL, CO. KERRY',
+'V31RC03',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'11',
+'3',
+'KARK'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'69',
+TO_DATE('11/03/2019', 'DD/MM/YYYY'),
+TO_DATE('15/09/2019', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'JOHN B KEANE, 37 WILLIAM ST, LISTOWEL, CO. KERRY',
+'V31RC03',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'11',
+'3',
+'KARK'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'70',
+TO_DATE('21/01/2019', 'DD/MM/YYYY'),
+TO_DATE('17/03/2020', 'DD/MM/YYYY'),
+'19:00',
+'21:00',
+'6',
+'JOHN B KEANE, 37 WILLIAM ST, LISTOWEL, CO. KERRY',
+'V31RC03',
+'840.00',
+'P',
+'0',
+'0.00',
+'A',
+'11',
+'2',
+'STPD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'71',
+TO_DATE('29/01/2019', 'DD/MM/YYYY'),
+TO_DATE('17/06/2019', 'DD/MM/YYYY'),
+'21:00',
+'04:00',
+'7',
+'THE SYNDICATE ROOMS, UPPER CASTLE ST., (PART OF BENNERS HOTEL), TRALEE, CO. KERRY',
+'V92N732',
+'605.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'11',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'72',
+TO_DATE('01/01/2019', 'DD/MM/YYYY'),
+TO_DATE('23/06/2019', 'DD/MM/YYYY'),
+'21:00',
+'04:00',
+'7',
+'THE SYNDICATE ROOMS, UPPER CASTLE ST., (PART OF BENNERS HOTEL), TRALEE, CO. KERRY',
+'V92N732',
+'605.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'11',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'73',
+TO_DATE('27/01/2019', 'DD/MM/YYYY'),
+TO_DATE('30/10/2019', 'DD/MM/YYYY'),
+'21:00',
+'04:00',
+'7',
+'THE SYNDICATE ROOMS, UPPER CASTLE ST., (PART OF BENNERS HOTEL), TRALEE, CO. KERRY',
+'V92N732',
+'475.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'10',
+'HALO'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'74',
+TO_DATE('21/01/2019', 'DD/MM/YYYY'),
+TO_DATE('24/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'THE SYNDICATE ROOMS, UPPER CASTLE ST., (PART OF BENNERS HOTEL), TRALEE, CO. KERRY',
+'V92N732',
+'800.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'2',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'75',
+TO_DATE('21/01/2019', 'DD/MM/YYYY'),
+TO_DATE('31/12/2020', 'DD/MM/YYYY'),
+'21:00',
+'06:00',
+'9',
+'THE SYNDICATE ROOMS, UPPER CASTLE ST., (PART OF BENNERS HOTEL), TRALEE, CO. KERRY',
+'V92N732',
+'825.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'10',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'76',
+TO_DATE('13/01/2019', 'DD/MM/YYYY'),
+TO_DATE('07/07/2019', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'CLUB HTWO, THE HILLGROVE, SPA RD, GROVE, DINGLE, CO. KERRY',
+'V92P048',
+'540.00',
+'P',
+'0',
+'0.00',
+'A',
+'13',
+'6',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'77',
+TO_DATE('16/01/2019', 'DD/MM/YYYY'),
+TO_DATE('18/08/2019', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'CLUB HTWO, THE HILLGROVE, SPA RD, GROVE, DINGLE, CO. KERRY',
+'V92P048',
+'540.00',
+'P',
+'0',
+'0.00',
+'A',
+'13',
+'6',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'78',
+TO_DATE('18/01/2019', 'DD/MM/YYYY'),
+TO_DATE('08/09/2019', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'CLUB HTWO, THE HILLGROVE, SPA RD, GROVE, DINGLE, CO. KERRY',
+'V92P048',
+'540.00',
+'P',
+'0',
+'0.00',
+'A',
+'13',
+'6',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'79',
+TO_DATE('05/02/2019', 'DD/MM/YYYY'),
+TO_DATE('24/06/2019', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'CLUB HTWO, THE HILLGROVE, SPA RD, GROVE, DINGLE, CO. KERRY',
+'V92P048',
+'780.00',
+'P',
+'0',
+'0.00',
+'A',
+'13',
+'6',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'80',
+TO_DATE('27/02/2019', 'DD/MM/YYYY'),
+TO_DATE('31/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'04:00',
+'7',
+'CLUB HTWO, THE HILLGROVE, SPA RD, GROVE, DINGLE, CO. KERRY',
+'V92P048',
+'810.00',
+'P',
+'0',
+'0.00',
+'A',
+'13',
+'6',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'81',
+TO_DATE('22/01/2019', 'DD/MM/YYYY'),
+TO_DATE('28/09/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'MULCAHYS, 47 GLADSTONE ST, OLDBRIDGE, CLONMEL, CO. TIPPERARY',
+'E91H1W9',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'14',
+'5',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'82',
+TO_DATE('28/01/2019', 'DD/MM/YYYY'),
+TO_DATE('18/09/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'MULCAHYS, 47 GLADSTONE ST, OLDBRIDGE, CLONMEL, CO. TIPPERARY',
+'E91H1W9',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'14',
+'5',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'83',
+TO_DATE('18/02/2019', 'DD/MM/YYYY'),
+TO_DATE('08/10/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'MULCAHYS, 47 GLADSTONE ST, OLDBRIDGE, CLONMEL, CO. TIPPERARY',
+'E91H1W9',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'14',
+'5',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'84',
+TO_DATE('18/03/2019', 'DD/MM/YYYY'),
+TO_DATE('08/11/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'MULCAHYS, 47 GLADSTONE ST, OLDBRIDGE, CLONMEL, CO. TIPPERARY',
+'E91H1W9',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'14',
+'12',
+'KARK'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'85',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('08/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'MULCAHYS, 47 GLADSTONE ST, OLDBRIDGE, CLONMEL, CO. TIPPERARY',
+'E91H1W9',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'14',
+'12',
+'KARK'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'86',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('12/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'FANNY O''DES''S, LISSYCASEY, ENNIS, CLARE, CLARE',
+'V95DX08',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'25',
+'12',
+'BDAY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'87',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('23/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'THE OLIVER PLUNKETT, 116 OLIVER PLUNKETT STREET, CENTRE, CORK, CORK',
+'T12P957',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'26',
+'22',
+'BDAY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'88',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('23/09/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'THE FARNHAM ARMS HOTEL, DUBLIN ROAD, KILLYGARRY, CAVAN, CAVAN',
+'H12V207',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'27',
+'28',
+'BDAY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'89',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('23/10/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'TONERS, 139 BAGGOT STREET LOWER, DOWNTOWN, DUBLIN, DUBLIN',
+'D02TW84',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'33',
+'34',
+'IRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'90',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('12/10/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'THE GINGER MAN, 39 FENIAN STREET, DUBLIN 2, DUBLIN, DUBLIN',
+'D02KD51',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'34',
+'40',
+'IRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'91',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('12/07/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'THE TEMPLE BAR, 48 TEMPLE BAR, DUBLIN 2, DUBLIN, DUBLIN',
+'D02N725',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'35',
+'45',
+'IRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'92',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('31/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'COPPER FACE JACKS, 30 HARCOURT STREET, SAINT KEVIN''S, DUBLIN 2, DUBLIN',
+'D02XV58',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'36',
+'50',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'93',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('28/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'COPPER FACE JACKS, 30 HARCOURT STREET, SAINT KEVIN''S, DUBLIN 2, DUBLIN',
+'D02XV58',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'36',
+'55',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'94',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('28/11/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'COPPER FACE JACKS, 30 HARCOURT STREET, SAINT KEVIN''S, DUBLIN 2, DUBLIN',
+'D02XV58',
+'2360.00',
+'P',
+'0',
+'0.00',
+'A',
+'36',
+'59',
+'CLEB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'95',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('18/08/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'COPPER FACE JACKS, 30 HARCOURT STREET, SAINT KEVIN''S, DUBLIN 2, DUBLIN',
+'D02XV58',
+'2360.00',
+'P',
+'0',
+'0.00',
+'A',
+'36',
+'58',
+'CLEB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'96',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('18/07/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'COPPER FACE JACKS, 30 HARCOURT STREET, SAINT KEVIN''S, DUBLIN 2, DUBLIN',
+'D02XV58',
+'3360.00',
+'P',
+'0',
+'0.00',
+'A',
+'36',
+'57',
+'CLEB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'97',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('18/06/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'COPPER FACE JACKS, 30 HARCOURT STREET, SAINT KEVIN''S, DUBLIN 2, DUBLIN',
+'D02XV58',
+'3360.00',
+'P',
+'0',
+'0.00',
+'A',
+'36',
+'56',
+'CLEB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'98',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('18/06/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'CACTUS JACKS, 8 CROSS STREET, GALWAY TOWN, GALWAY, GALWAY',
+'H91YY06',
+'760.00',
+'P',
+'0',
+'0.00',
+'A',
+'38',
+'24',
+'IRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'99',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('08/06/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'THE SKEFF BAR, 27 EYRE SQUARE, GALWAY TOWN, GALWAY, GALWAY',
+'H91YY06',
+'760.00',
+'P',
+'0',
+'0.00',
+'A',
+'39',
+'36',
+'IRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'100',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('28/12/2019', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'THE ACHILL HEAD, POLLAGH, KEEL EAST, KEEL, ACHILL ISLAND, MAYO',
+'F28D7P8',
+'760.00',
+'P',
+'0',
+'0.00',
+'A',
+'51',
+'42',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'101',
+TO_DATE('14/03/2015', 'DD/MM/YYYY'),
+TO_DATE('28/12/2015', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'THE CUBE, KILLARNEY, KERRY',
+'V31D949',
+'775.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'1',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'102',
+TO_DATE('17/03/2015', 'DD/MM/YYYY'),
+TO_DATE('14/10/2015', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'THE CUBE, KILLARNEY, KERRY',
+'V31D949',
+'500.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'1',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'103',
+TO_DATE('14/02/2015', 'DD/MM/YYYY'),
+TO_DATE('28/08/2015', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'THE CUBE, KILLARNEY, KERRY',
+'V31D949',
+'535.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'1',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'104',
+TO_DATE('04/03/2015', 'DD/MM/YYYY'),
+TO_DATE('28/12/2015', 'DD/MM/YYYY'),
+'20:00',
+'02:00',
+'6',
+'THE CUBE, KILLARNEY, KERRY',
+'V31D949',
+'750.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'9',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'105',
+TO_DATE('10/01/2015', 'DD/MM/YYYY'),
+TO_DATE('26/12/2015', 'DD/MM/YYYY'),
+'21:00',
+'04:00',
+'7',
+'THE CUBE, KILLARNEY, KERRY',
+'V31D949',
+'880.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'2',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'106',
+TO_DATE('10/02/2015', 'DD/MM/YYYY'),
+TO_DATE('26/06/2015', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'THE GRAND, KILLARNEY, KERRY',
+'V31D814',
+'400.00',
+'P',
+'0',
+'0.00',
+'A',
+'1',
+'2',
+'ANVY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'107',
+TO_DATE('10/01/2015', 'DD/MM/YYYY'),
+TO_DATE('26/09/2015', 'DD/MM/YYYY'),
+'20:00',
+'01:00',
+'5',
+'THE GRAND, KILLARNEY, KERRY',
+'V31D814',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'1',
+'3',
+'BDAY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'108',
+TO_DATE('10/01/2015', 'DD/MM/YYYY'),
+TO_DATE('12/11/2015', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'THE GRAND, KILLARNEY, KERRY',
+'V31D814',
+'480.00',
+'P',
+'0',
+'0.00',
+'A',
+'1',
+'6',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'109',
+TO_DATE('16/01/2015', 'DD/MM/YYYY'),
+TO_DATE('26/12/2015', 'DD/MM/YYYY'),
+'20:00',
+'03:00',
+'7',
+'THE GRAND, KILLARNEY, KERRY',
+'V31D814',
+'880.00',
+'P',
+'0',
+'0.00',
+'A',
+'1',
+'7',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'110',
+TO_DATE('10/03/2015', 'DD/MM/YYYY'),
+TO_DATE('31/10/2015', 'DD/MM/YYYY'),
+'20:00',
+'02:00',
+'6',
+'THE GRAND, KILLARNEY, KERRY',
+'V31D814',
+'540.00',
+'P',
+'0',
+'0.00',
+'A',
+'1',
+'7',
+'HALO'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'111',
+TO_DATE('04/01/2015', 'DD/MM/YYYY'),
+TO_DATE('15/06/2015', 'DD/MM/YYYY'),
+'16:00',
+'21:00',
+'5',
+'O''NEILLS, LISTOWEL, KERRY',
+'V31TP48',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'2',
+'2',
+'BARM'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'112',
+TO_DATE('08/02/2015', 'DD/MM/YYYY'),
+TO_DATE('26/11/2015', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'O''NEILLS, LISTOWEL, KERRY',
+'V31TP48',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'2',
+'4',
+'BDAY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'113',
+TO_DATE('12/03/2015', 'DD/MM/YYYY'),
+TO_DATE('03/07/2015', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'O''NEILLS, LISTOWEL, KERRY',
+'V31TP48',
+'540.00',
+'P',
+'0',
+'0.00',
+'A',
+'2',
+'5',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'114',
+TO_DATE('25/01/2015', 'DD/MM/YYYY'),
+TO_DATE('18/07/2015', 'DD/MM/YYYY'),
+'18:00',
+'23:00',
+'5',
+'O''NEILLS, LISTOWEL, KERRY',
+'V31TP48',
+'610.00',
+'P',
+'0',
+'0.00',
+'A',
+'2',
+'8',
+'CORP'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'115',
+TO_DATE('26/02/2015', 'DD/MM/YYYY'),
+TO_DATE('08/06/2015', 'DD/MM/YYYY'),
+'14:00',
+'20:00',
+'6',
+'O''NEILLS, LISTOWEL, KERRY',
+'V31TP48',
+'450.00',
+'P',
+'0',
+'0.00',
+'A',
+'2',
+'11',
+'CRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'116',
+TO_DATE('10/01/2015', 'DD/MM/YYYY'),
+TO_DATE('24/10/2015', 'DD/MM/YYYY'),
+'21:00',
+'00:00',
+'3',
+'HARKINS, TRALEE, KERRY',
+'V31S657',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'2',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'117',
+TO_DATE('18/03/2015', 'DD/MM/YYYY'),
+TO_DATE('31/12/2015', 'DD/MM/YYYY'),
+'19:00',
+'03:00',
+'8',
+'HARKINS, TRALEE, KERRY',
+'V31S657',
+'920.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'3',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'118',
+TO_DATE('10/02/2015', 'DD/MM/YYYY'),
+TO_DATE('06/10/2015', 'DD/MM/YYYY'),
+'21:00',
+'00:00',
+'3',
+'HARKINS, TRALEE, KERRY',
+'V31S657',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'2',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'119',
+TO_DATE('29/01/2015', 'DD/MM/YYYY'),
+TO_DATE('17/07/2015', 'DD/MM/YYYY'),
+'19:00',
+'00:00',
+'5',
+'HARKINS, TRALEE, KERRY',
+'V31S657',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'7',
+'PRFU'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'120',
+TO_DATE('10/03/2015', 'DD/MM/YYYY'),
+TO_DATE('24/09/2015', 'DD/MM/YYYY'),
+'21:00',
+'00:00',
+'3',
+'HARKINS, TRALEE, KERRY',
+'V31S657',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'2',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'121',
+TO_DATE('21/01/2015', 'DD/MM/YYYY'),
+TO_DATE('24/08/2015', 'DD/MM/YYYY'),
+'15:00',
+'20:00',
+'5',
+'SCRUFFYS, KILLARNEY, KERRY',
+'V93R74H',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'3',
+'BARM'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'122',
+TO_DATE('22/02/2015', 'DD/MM/YYYY'),
+TO_DATE('14/06/2015', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'SCRUFFYS, KILLARNEY, KERRY',
+'V93R74H',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'4',
+'ANVY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'123',
+TO_DATE('23/03/2015', 'DD/MM/YYYY'),
+TO_DATE('04/07/2015', 'DD/MM/YYYY'),
+'14:00',
+'20:00',
+'6',
+'SCRUFFYS, KILLARNEY, KERRY',
+'V93R74H',
+'420.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'4',
+'CRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'124',
+TO_DATE('11/01/2015', 'DD/MM/YYYY'),
+TO_DATE('30/10/2015', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'SCRUFFYS, KILLARNEY, KERRY',
+'V93R74H',
+'400.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'12',
+'HALO'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'125',
+TO_DATE('31/01/2015', 'DD/MM/YYYY'),
+TO_DATE('31/12/2015', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'SCRUFFYS, KILLARNEY, KERRY',
+'V93R74H',
+'810.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'11',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'126',
+TO_DATE('30/01/2015', 'DD/MM/YYYY'),
+TO_DATE('31/08/2015', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'RIVER ISLAND HOTEL, LOWER MAIN ST, CHAPEL QUARTER, CASTLEISLAND, KERRY',
+'V92HWN0',
+'500.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'1',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'127',
+TO_DATE('23/01/2015', 'DD/MM/YYYY'),
+TO_DATE('31/12/2015', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'RIVER ISLAND HOTEL, LOWER MAIN ST, CHAPEL QUARTER, CASTLEISLAND, KERRY',
+'V92HWN0',
+'750.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'9',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'128',
+TO_DATE('09/02/2015', 'DD/MM/YYYY'),
+TO_DATE('02/09/2015', 'DD/MM/YYYY'),
+'20:00',
+'23:00',
+'3',
+'RIVER ISLAND HOTEL, LOWER MAIN ST, CHAPEL QUARTER, CASTLEISLAND, KERRY',
+'V92HWN0',
+'385.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'1',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'129',
+TO_DATE('08/01/2015', 'DD/MM/YYYY'),
+TO_DATE('26/07/2015', 'DD/MM/YYYY'),
+'20:00',
+'02:00',
+'6',
+'RIVER ISLAND HOTEL, LOWER MAIN ST, CHAPEL QUARTER, CASTLEISLAND, KERRY',
+'V92HWN0',
+'690.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'9',
+'WEDD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'130',
+TO_DATE('13/03/2015', 'DD/MM/YYYY'),
+TO_DATE('17/03/2015', 'DD/MM/YYYY'),
+'19:00',
+'01:00',
+'6',
+'RIVER ISLAND HOTEL, LOWER MAIN ST, CHAPEL QUARTER, CASTLEISLAND, KERRY',
+'V92HWN0',
+'840.00',
+'P',
+'0',
+'0.00',
+'A',
+'3',
+'7',
+'STPD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'131',
+TO_DATE('13/02/2016', 'DD/MM/YYYY'),
+TO_DATE('17/06/2016', 'DD/MM/YYYY'),
+'19:00',
+'22:00',
+'3',
+'PARK HOUSE HOTEL, 50 MAIN ST, EDGEWORTHSTOWN, CO. LONGFORD',
+'N39F5C3',
+'300.00',
+'P',
+'0',
+'0.00',
+'A',
+'4',
+'12',
+'ANVY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'132',
+TO_DATE('23/03/2016', 'DD/MM/YYYY'),
+TO_DATE('17/03/2020', 'DD/MM/YYYY'),
+'19:00',
+'01:00',
+'6',
+'PARK HOUSE HOTEL, 50 MAIN ST, EDGEWORTHSTOWN, CO. LONGFORD',
+'N39F5C3',
+'780.00',
+'P',
+'0',
+'0.00',
+'A',
+'4',
+'5',
+'STPD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'133',
+TO_DATE('03/03/2016', 'DD/MM/YYYY'),
+TO_DATE('17/08/2016', 'DD/MM/YYYY'),
+'20:00',
+'00:00',
+'4',
+'PARK HOUSE HOTEL, 50 MAIN ST, EDGEWORTHSTOWN, CO. LONGFORD',
+'N39F5C3',
+'320.00',
+'P',
+'0',
+'0.00',
+'A',
+'4',
+'12',
+'BDAY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'134',
+TO_DATE('18/02/2016', 'DD/MM/YYYY'),
+TO_DATE('27/11/2016', 'DD/MM/YYYY'),
+'19:00',
+'00:00',
+'5',
+'PARK HOUSE HOTEL, 50 MAIN ST, EDGEWORTHSTOWN, CO. LONGFORD',
+'N39F5C3',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'4',
+'3',
+'ANVY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'135',
+TO_DATE('17/02/2016', 'DD/MM/YYYY'),
+TO_DATE('21/02/2016', 'DD/MM/YYYY'),
+'19:00',
+'02:00',
+'7',
+'PARK HOUSE HOTEL, 50 MAIN ST, EDGEWORTHSTOWN, CO. LONGFORD',
+'N39F5C3',
+'680.00',
+'P',
+'0',
+'0.00',
+'A',
+'4',
+'12',
+'WEDD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'136',
+TO_DATE('18/01/2016', 'DD/MM/YYYY'),
+TO_DATE('28/11/2016', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'RUBY''S NIGHTCLUB, KILMANIHEEN, KILMANIHAN WEST, CO. KERRY',
+'V92HN5H',
+'460.00',
+'P',
+'0',
+'0.00',
+'A',
+'5',
+'9',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'137',
+TO_DATE('18/02/2016', 'DD/MM/YYYY'),
+TO_DATE('27/10/2016', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'RUBY''S NIGHTCLUB, KILMANIHEEN, KILMANIHAN WEST, CO. KERRY',
+'V92HN5H',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'5',
+'8',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'138',
+TO_DATE('08/02/2016', 'DD/MM/YYYY'),
+TO_DATE('07/11/2016', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'RUBY''S NIGHTCLUB, KILMANIHEEN, KILMANIHAN WEST, CO. KERRY',
+'V92HN5H',
+'460.00',
+'P',
+'0',
+'0.00',
+'A',
+'5',
+'9',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'139',
+TO_DATE('18/02/2016', 'DD/MM/YYYY'),
+TO_DATE('27/12/2016', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'RUBY''S NIGHTCLUB, KILMANIHEEN, KILMANIHAN WEST, CO. KERRY',
+'V92HN5H',
+'680.00',
+'P',
+'0',
+'0.00',
+'A',
+'5',
+'8',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'140',
+TO_DATE('18/02/2016', 'DD/MM/YYYY'),
+TO_DATE('29/12/2016', 'DD/MM/YYYY'),
+'22:00',
+'02:00',
+'4',
+'RUBY''S NIGHTCLUB, KILMANIHEEN, KILMANIHAN WEST, CO. KERRY',
+'V92HN5H',
+'760.00',
+'P',
+'0',
+'0.00',
+'A',
+'5',
+'7',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'141',
+TO_DATE('12/02/2016', 'DD/MM/YYYY'),
+TO_DATE('29/10/2016', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'THE MERMAIDS NIGHT CLUB, 47 WILLIAM STREET, LISTOWEL, CO. KERRY',
+'V31P499',
+'480.00',
+'P',
+'0',
+'0.00',
+'A',
+'6',
+'8',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'142',
+TO_DATE('18/03/2016', 'DD/MM/YYYY'),
+TO_DATE('29/09/2016', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'THE MERMAIDS NIGHT CLUB, 47 WILLIAM STREET, LISTOWEL, CO. KERRY',
+'V31P499',
+'600.00',
+'P',
+'0',
+'0.00',
+'A',
+'6',
+'3',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'143',
+TO_DATE('28/02/2016', 'DD/MM/YYYY'),
+TO_DATE('29/12/2016', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'THE MERMAIDS NIGHT CLUB, 47 WILLIAM STREET, LISTOWEL, CO. KERRY',
+'V31P499',
+'780.00',
+'P',
+'0',
+'0.00',
+'A',
+'6',
+'6',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'144',
+TO_DATE('18/02/2016', 'DD/MM/YYYY'),
+TO_DATE('30/12/2016', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'THE MERMAIDS NIGHT CLUB, 47 WILLIAM STREET, LISTOWEL, CO. KERRY',
+'V31P499',
+'750.00',
+'P',
+'0',
+'0.00',
+'A',
+'6',
+'10',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'145',
+TO_DATE('18/02/2016', 'DD/MM/YYYY'),
+TO_DATE('31/12/2016', 'DD/MM/YYYY'),
+'20:00',
+'05:00',
+'9',
+'THE MERMAIDS NIGHT CLUB, 47 WILLIAM STREET, LISTOWEL, CO. KERRY',
+'V31P499',
+'960.00',
+'P',
+'0',
+'0.00',
+'A',
+'6',
+'7',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'146',
+TO_DATE('04/03/2016', 'DD/MM/YYYY'),
+TO_DATE('31/07/2016', 'DD/MM/YYYY'),
+'17:00',
+'22:00',
+'5',
+'KNOCKNAGOSHEL COMMUNITY CENTRE, KNOCKNAGOSHEL, CO. KERRY',
+'V92WV70',
+'365.00',
+'P',
+'0',
+'0.00',
+'A',
+'7',
+'9',
+'PRFU'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'147',
+TO_DATE('08/03/2016', 'DD/MM/YYYY'),
+TO_DATE('31/08/2016', 'DD/MM/YYYY'),
+'12:00',
+'20:00',
+'8',
+'KNOCKNAGOSHEL COMMUNITY CENTRE, KNOCKNAGOSHEL, CO. KERRY',
+'V92WV70',
+'480.00',
+'P',
+'0',
+'0.00',
+'A',
+'7',
+'4',
+'CRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'148',
+TO_DATE('28/02/2016', 'DD/MM/YYYY'),
+TO_DATE('29/09/2016', 'DD/MM/YYYY'),
+'13:00',
+'18:00',
+'5',
+'KNOCKNAGOSHEL COMMUNITY CENTRE, KNOCKNAGOSHEL, CO. KERRY',
+'V92WV70',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'7',
+'5',
+'CRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'149',
+TO_DATE('26/02/2016', 'DD/MM/YYYY'),
+TO_DATE('22/06/2016', 'DD/MM/YYYY'),
+'20:00',
+'22:00',
+'2',
+'KNOCKNAGOSHEL COMMUNITY CENTRE, KNOCKNAGOSHEL, CO. KERRY',
+'V92WV70',
+'290.00',
+'P',
+'0',
+'0.00',
+'A',
+'7',
+'9',
+'PRFU'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'150',
+TO_DATE('14/03/2017', 'DD/MM/YYYY'),
+TO_DATE('17/07/2017', 'DD/MM/YYYY'),
+'14:00',
+'17:00',
+'3',
+'KNOCKNAGOSHEL COMMUNITY CENTRE, KNOCKNAGOSHEL, CO. KERRY',
+'V92WV70',
+'315.00',
+'P',
+'0',
+'0.00',
+'A',
+'7',
+'9',
+'BARM'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'151',
+TO_DATE('14/03/2017', 'DD/MM/YYYY'),
+TO_DATE('17/03/2027', 'DD/MM/YYYY'),
+'20:00',
+'02:00',
+'6',
+'MCSORLEY''S, 10 COLLEGE STREET, KILLARNEY, CO. KERRY',
+'V93WP65',
+'810.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'11',
+'STPD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'152',
+TO_DATE('24/03/2017', 'DD/MM/YYYY'),
+TO_DATE('31/10/2017', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'MCSORLEY''S, 10 COLLEGE STREET, KILLARNEY, CO. KERRY',
+'V93WP65',
+'475.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'11',
+'HALO'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'153',
+TO_DATE('04/03/2017', 'DD/MM/YYYY'),
+TO_DATE('17/07/2017', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'MCSORLEY''S, 10 COLLEGE STREET, KILLARNEY, CO. KERRY',
+'V93WP65',
+'560.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'2',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'154',
+TO_DATE('18/03/2017', 'DD/MM/YYYY'),
+TO_DATE('27/07/2017', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'MCSORLEY''S, 10 COLLEGE STREET, KILLARNEY, CO. KERRY',
+'V93WP65',
+'560.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'2',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'155',
+TO_DATE('28/03/2017', 'DD/MM/YYYY'),
+TO_DATE('17/09/2017', 'DD/MM/YYYY'),
+'19:00',
+'22:00',
+'3',
+'MCSORLEY''S, 10 COLLEGE STREET, KILLARNEY, CO. KERRY',
+'V93WP65',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'8',
+'4',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'156',
+TO_DATE('28/02/2017', 'DD/MM/YYYY'),
+TO_DATE('17/08/2017', 'DD/MM/YYYY'),
+'20:00',
+'01:00',
+'5',
+'THE HEIGHTS HOTEL KILLARNEY, CORK ROAD, BALLYCASHEEN, KILLARNEY, CO. KERRY',
+'V93XKR4',
+'740.00',
+'P',
+'0',
+'0.00',
+'A',
+'9',
+'7',
+'WEDD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'157',
+TO_DATE('20/03/2017', 'DD/MM/YYYY'),
+TO_DATE('17/09/2017', 'DD/MM/YYYY'),
+'20:00',
+'01:00',
+'5',
+'THE HEIGHTS HOTEL KILLARNEY, CORK ROAD, BALLYCASHEEN, KILLARNEY, CO. KERRY',
+'V93XKR4',
+'340.00',
+'P',
+'0',
+'0.00',
+'A',
+'9',
+'12',
+'PRFU'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'158',
+TO_DATE('14/03/2017', 'DD/MM/YYYY'),
+TO_DATE('14/09/2017', 'DD/MM/YYYY'),
+'20:00',
+'01:00',
+'5',
+'THE HEIGHTS HOTEL KILLARNEY, CORK ROAD, BALLYCASHEEN, KILLARNEY, CO. KERRY',
+'V93XKR4',
+'690.00',
+'P',
+'0',
+'0.00',
+'A',
+'9',
+'4',
+'WEDD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'159',
+TO_DATE('06/02/2017', 'DD/MM/YYYY'),
+TO_DATE('11/06/2017', 'DD/MM/YYYY'),
+'17:00',
+'20:00',
+'3',
+'THE HEIGHTS HOTEL KILLARNEY, CORK ROAD, BALLYCASHEEN, KILLARNEY, CO. KERRY',
+'V93XKR4',
+'600.00',
+'P',
+'0',
+'0.00',
+'A',
+'9',
+'6',
+'CORP'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'160',
+TO_DATE('22/02/2017', 'DD/MM/YYYY'),
+TO_DATE('05/07/2017', 'DD/MM/YYYY'),
+'20:00',
+'01:00',
+'5',
+'THE HEIGHTS HOTEL KILLARNEY, CORK ROAD, BALLYCASHEEN, KILLARNEY, CO. KERRY',
+'V93XKR4',
+'690.00',
+'P',
+'0',
+'0.00',
+'A',
+'9',
+'4',
+'WEDD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'161',
+TO_DATE('21/02/2017', 'DD/MM/YYYY'),
+TO_DATE('03/07/2017', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'THE SAILOR''S BAR, KILLAHA WEST, KENMARE, CO. KERRY',
+'V93VY24',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'10',
+'4',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'162',
+TO_DATE('21/02/2017', 'DD/MM/YYYY'),
+TO_DATE('11/07/2017', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'THE SAILOR''S BAR, KILLAHA WEST, KENMARE, CO. KERRY',
+'V93VY24',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'10',
+'5',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'163',
+TO_DATE('21/02/2017', 'DD/MM/YYYY'),
+TO_DATE('25/07/2017', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'THE SAILOR''S BAR, KILLAHA WEST, KENMARE, CO. KERRY',
+'V93VY24',
+'400.00',
+'P',
+'0',
+'0.00',
+'A',
+'10',
+'6',
+'KARK'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'164',
+TO_DATE('21/02/2017', 'DD/MM/YYYY'),
+TO_DATE('05/08/2017', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'THE SAILOR''S BAR, KILLAHA WEST, KENMARE, CO. KERRY',
+'V93VY24',
+'400.00',
+'P',
+'0',
+'0.00',
+'A',
+'10',
+'4',
+'KARK'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'165',
+TO_DATE('21/02/2017', 'DD/MM/YYYY'),
+TO_DATE('05/09/2017', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'THE SAILOR''S BAR, KILLAHA WEST, KENMARE, CO. KERRY',
+'V93VY24',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'10',
+'5',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'166',
+TO_DATE('11/02/2017', 'DD/MM/YYYY'),
+TO_DATE('15/06/2017', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'JOHN B KEANE, 37 WILLIAM ST, LISTOWEL, CO. KERRY',
+'V31RC03',
+'350.00',
+'P',
+'0',
+'0.00',
+'A',
+'11',
+'8',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'167',
+TO_DATE('01/02/2017', 'DD/MM/YYYY'),
+TO_DATE('15/07/2017', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'JOHN B KEANE, 37 WILLIAM ST, LISTOWEL, CO. KERRY',
+'V31RC03',
+'430.00',
+'P',
+'0',
+'0.00',
+'A',
+'11',
+'7',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'168',
+TO_DATE('21/03/2017', 'DD/MM/YYYY'),
+TO_DATE('15/08/2017', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'JOHN B KEANE, 37 WILLIAM ST, LISTOWEL, CO. KERRY',
+'V31RC03',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'11',
+'3',
+'KARK'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'169',
+TO_DATE('11/03/2017', 'DD/MM/YYYY'),
+TO_DATE('15/09/2017', 'DD/MM/YYYY'),
+'19:00',
+'23:00',
+'4',
+'JOHN B KEANE, 37 WILLIAM ST, LISTOWEL, CO. KERRY',
+'V31RC03',
+'440.00',
+'P',
+'0',
+'0.00',
+'A',
+'11',
+'3',
+'KARK'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'170',
+TO_DATE('21/01/2017', 'DD/MM/YYYY'),
+TO_DATE('17/03/2017', 'DD/MM/YYYY'),
+'19:00',
+'21:00',
+'6',
+'JOHN B KEANE, 37 WILLIAM ST, LISTOWEL, CO. KERRY',
+'V31RC03',
+'840.00',
+'P',
+'0',
+'0.00',
+'A',
+'11',
+'2',
+'STPD'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'171',
+TO_DATE('29/01/2017', 'DD/MM/YYYY'),
+TO_DATE('17/06/2017', 'DD/MM/YYYY'),
+'21:00',
+'04:00',
+'7',
+'THE SYNDICATE ROOMS, UPPER CASTLE ST., (PART OF BENNERS HOTEL), TRALEE, CO. KERRY',
+'V92N732',
+'605.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'11',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'172',
+TO_DATE('01/01/2017', 'DD/MM/YYYY'),
+TO_DATE('23/06/2017', 'DD/MM/YYYY'),
+'21:00',
+'04:00',
+'7',
+'THE SYNDICATE ROOMS, UPPER CASTLE ST., (PART OF BENNERS HOTEL), TRALEE, CO. KERRY',
+'V92N732',
+'605.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'11',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'173',
+TO_DATE('27/01/2018', 'DD/MM/YYYY'),
+TO_DATE('30/10/2018', 'DD/MM/YYYY'),
+'21:00',
+'04:00',
+'7',
+'THE SYNDICATE ROOMS, UPPER CASTLE ST., (PART OF BENNERS HOTEL), TRALEE, CO. KERRY',
+'V92N732',
+'475.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'10',
+'HALO'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'174',
+TO_DATE('21/01/2018', 'DD/MM/YYYY'),
+TO_DATE('24/12/2018', 'DD/MM/YYYY'),
+'21:00',
+'02:00',
+'5',
+'THE SYNDICATE ROOMS, UPPER CASTLE ST., (PART OF BENNERS HOTEL), TRALEE, CO. KERRY',
+'V92N732',
+'800.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'2',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'175',
+TO_DATE('21/01/2018', 'DD/MM/YYYY'),
+TO_DATE('31/12/2018', 'DD/MM/YYYY'),
+'21:00',
+'06:00',
+'9',
+'THE SYNDICATE ROOMS, UPPER CASTLE ST., (PART OF BENNERS HOTEL), TRALEE, CO. KERRY',
+'V92N732',
+'825.00',
+'P',
+'0',
+'0.00',
+'A',
+'12',
+'10',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'176',
+TO_DATE('13/01/2018', 'DD/MM/YYYY'),
+TO_DATE('07/07/2018', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'CLUB HTWO, THE HILLGROVE, SPA RD, GROVE, DINGLE, CO. KERRY',
+'V92P048',
+'540.00',
+'P',
+'0',
+'0.00',
+'A',
+'13',
+'6',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'177',
+TO_DATE('16/01/2018', 'DD/MM/YYYY'),
+TO_DATE('18/08/2018', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'CLUB HTWO, THE HILLGROVE, SPA RD, GROVE, DINGLE, CO. KERRY',
+'V92P048',
+'540.00',
+'P',
+'0',
+'0.00',
+'A',
+'13',
+'6',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'178',
+TO_DATE('18/01/2018', 'DD/MM/YYYY'),
+TO_DATE('08/09/2018', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'CLUB HTWO, THE HILLGROVE, SPA RD, GROVE, DINGLE, CO. KERRY',
+'V92P048',
+'540.00',
+'P',
+'0',
+'0.00',
+'A',
+'13',
+'6',
+'CLUB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'179',
+TO_DATE('05/02/2018', 'DD/MM/YYYY'),
+TO_DATE('24/06/2018', 'DD/MM/YYYY'),
+'21:00',
+'03:00',
+'6',
+'CLUB HTWO, THE HILLGROVE, SPA RD, GROVE, DINGLE, CO. KERRY',
+'V92P048',
+'780.00',
+'P',
+'0',
+'0.00',
+'A',
+'13',
+'6',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'180',
+TO_DATE('27/02/2018', 'DD/MM/YYYY'),
+TO_DATE('31/12/2018', 'DD/MM/YYYY'),
+'21:00',
+'04:00',
+'7',
+'CLUB HTWO, THE HILLGROVE, SPA RD, GROVE, DINGLE, CO. KERRY',
+'V92P048',
+'810.00',
+'P',
+'0',
+'0.00',
+'A',
+'13',
+'6',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'181',
+TO_DATE('22/01/2018', 'DD/MM/YYYY'),
+TO_DATE('28/09/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'MULCAHYS, 47 GLADSTONE ST, OLDBRIDGE, CLONMEL, CO. TIPPERARY',
+'E91H1W9',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'14',
+'5',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'182',
+TO_DATE('28/01/2018', 'DD/MM/YYYY'),
+TO_DATE('18/09/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'MULCAHYS, 47 GLADSTONE ST, OLDBRIDGE, CLONMEL, CO. TIPPERARY',
+'E91H1W9',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'14',
+'5',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'183',
+TO_DATE('18/02/2018', 'DD/MM/YYYY'),
+TO_DATE('08/10/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'MULCAHYS, 47 GLADSTONE ST, OLDBRIDGE, CLONMEL, CO. TIPPERARY',
+'E91H1W9',
+'390.00',
+'P',
+'0',
+'0.00',
+'A',
+'14',
+'5',
+'PBAR'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'184',
+TO_DATE('18/03/2018', 'DD/MM/YYYY'),
+TO_DATE('08/11/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'MULCAHYS, 47 GLADSTONE ST, OLDBRIDGE, CLONMEL, CO. TIPPERARY',
+'E91H1W9',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'14',
+'12',
+'KARK'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'185',
+TO_DATE('15/02/2018', 'DD/MM/YYYY'),
+TO_DATE('08/12/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'MULCAHYS, 47 GLADSTONE ST, OLDBRIDGE, CLONMEL, CO. TIPPERARY',
+'E91H1W9',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'14',
+'12',
+'KARK'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'186',
+TO_DATE('15/02/2018', 'DD/MM/YYYY'),
+TO_DATE('12/12/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'FANNY O''DES''S, LISSYCASEY, ENNIS, CLARE, CLARE',
+'V95DX08',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'25',
+'12',
+'BDAY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'187',
+TO_DATE('15/02/2018', 'DD/MM/YYYY'),
+TO_DATE('23/12/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'THE OLIVER PLUNKETT, 116 OLIVER PLUNKETT STREET, CENTRE, CORK, CORK',
+'T12P957',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'26',
+'22',
+'BDAY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'188',
+TO_DATE('15/02/2018', 'DD/MM/YYYY'),
+TO_DATE('23/09/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'THE FARNHAM ARMS HOTEL, DUBLIN ROAD, KILLYGARRY, CAVAN, CAVAN',
+'H12V207',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'27',
+'28',
+'BDAY'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'189',
+TO_DATE('15/02/2018', 'DD/MM/YYYY'),
+TO_DATE('23/10/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'TONERS, 139 BAGGOT STREET LOWER, DOWNTOWN, DUBLIN, DUBLIN',
+'D02TW84',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'33',
+'34',
+'IRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'190',
+TO_DATE('15/02/2018', 'DD/MM/YYYY'),
+TO_DATE('12/10/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'THE GINGER MAN, 39 FENIAN STREET, DUBLIN 2, DUBLIN, DUBLIN',
+'D02KD51',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'34',
+'40',
+'IRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'191',
+TO_DATE('15/02/2018', 'DD/MM/YYYY'),
+TO_DATE('12/07/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'THE TEMPLE BAR, 48 TEMPLE BAR, DUBLIN 2, DUBLIN, DUBLIN',
+'D02N725',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'35',
+'45',
+'IRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'192',
+TO_DATE('15/02/2018', 'DD/MM/YYYY'),
+TO_DATE('31/12/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'COPPER FACE JACKS, 30 HARCOURT STREET, SAINT KEVIN''S, DUBLIN 2, DUBLIN',
+'D02XV58',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'36',
+'50',
+'NYEV'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'193',
+TO_DATE('15/02/2018', 'DD/MM/YYYY'),
+TO_DATE('28/12/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'COPPER FACE JACKS, 30 HARCOURT STREET, SAINT KEVIN''S, DUBLIN 2, DUBLIN',
+'D02XV58',
+'360.00',
+'P',
+'0',
+'0.00',
+'A',
+'36',
+'55',
+'XMAS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'194',
+TO_DATE('15/02/2018', 'DD/MM/YYYY'),
+TO_DATE('28/11/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'COPPER FACE JACKS, 30 HARCOURT STREET, SAINT KEVIN''S, DUBLIN 2, DUBLIN',
+'D02XV58',
+'2360.00',
+'P',
+'0',
+'0.00',
+'A',
+'36',
+'59',
+'CLEB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'195',
+TO_DATE('15/02/2018', 'DD/MM/YYYY'),
+TO_DATE('18/08/2018', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'COPPER FACE JACKS, 30 HARCOURT STREET, SAINT KEVIN''S, DUBLIN 2, DUBLIN',
+'D02XV58',
+'2360.00',
+'P',
+'0',
+'0.00',
+'A',
+'36',
+'58',
+'CLEB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'196',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('18/07/2020', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'COPPER FACE JACKS, 30 HARCOURT STREET, SAINT KEVIN''S, DUBLIN 2, DUBLIN',
+'D02XV58',
+'3360.00',
+'P',
+'0',
+'0.00',
+'A',
+'36',
+'57',
+'CLEB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'197',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('18/06/2020', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'COPPER FACE JACKS, 30 HARCOURT STREET, SAINT KEVIN''S, DUBLIN 2, DUBLIN',
+'D02XV58',
+'3360.00',
+'P',
+'0',
+'0.00',
+'A',
+'36',
+'56',
+'CLEB'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'198',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('18/06/2020', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'CACTUS JACKS, 8 CROSS STREET, GALWAY TOWN, GALWAY, GALWAY',
+'H91YY06',
+'760.00',
+'P',
+'0',
+'0.00',
+'A',
+'38',
+'24',
+'IRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'199',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('08/06/2020', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'THE SKEFF BAR, 27 EYRE SQUARE, GALWAY TOWN, GALWAY, GALWAY',
+'H91YY06',
+'760.00',
+'P',
+'0',
+'0.00',
+'A',
+'39',
+'36',
+'IRIS'
+);
+
+INSERT INTO BOOKINGS VALUES(
+'200',
+TO_DATE('15/02/2019', 'DD/MM/YYYY'),
+TO_DATE('28/12/2020', 'DD/MM/YYYY'),
+'21:00',
+'01:00',
+'4',
+'THE ACHILL HEAD, POLLAGH, KEEL EAST, KEEL, ACHILL ISLAND, MAYO',
+'F28D7P8',
+'760.00',
+'P',
+'0',
+'0.00',
+'A',
+'51',
+'42',
+'XMAS'
+);
+
+Commit;

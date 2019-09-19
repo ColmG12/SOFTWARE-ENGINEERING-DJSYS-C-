@@ -1,0 +1,479 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A82CC2CB-BEEA-4442-B959-E2F27AC182CF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>DJSys</RootNamespace>
+    <AssemblyName>DJSys</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.18.3.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.18.3.0\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bookings.cs" />
+    <Compile Include="Analysis.cs" />
+    <Compile Include="DJs.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="DBConnect.cs" />
+    <Compile Include="FlexibleMessageBox.cs" />
+    <Compile Include="frmAddClient.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddClient.Designer.cs">
+      <DependentUpon>frmAddClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAddDJ.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddDJ.Designer.cs">
+      <DependentUpon>frmAddDJ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAnalyseRevenueByYear.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAnalyseRevenueByYear.Designer.cs">
+      <DependentUpon>frmAnalyseRevenueByYear.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAnalyseRevenueByService.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAnalyseRevenueByService.Designer.cs">
+      <DependentUpon>frmAnalyseRevenueByService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCancelBooking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCancelBooking.Designer.cs">
+      <DependentUpon>frmCancelBooking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmChangeBooking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChangeBooking.Designer.cs">
+      <DependentUpon>frmChangeBooking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLogService.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLogService.Designer.cs">
+      <DependentUpon>frmLogService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMainMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMainMenu.Designer.cs">
+      <DependentUpon>frmMainMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMakeBooking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMakeBooking.Designer.cs">
+      <DependentUpon>frmMakeBooking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmQueryClient.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmQueryClient.Designer.cs">
+      <DependentUpon>frmQueryClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmQueryService.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmQueryService.Designer.cs">
+      <DependentUpon>frmQueryService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmShowDJSchedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmShowDJSchedule.Designer.cs">
+      <DependentUpon>frmShowDJSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmUpdateClient.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUpdateClient.Designer.cs">
+      <DependentUpon>frmUpdateClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmUpdateService.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUpdateService.Designer.cs">
+      <DependentUpon>frmUpdateService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWithdrawClient.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWithdrawClient.Designer.cs">
+      <DependentUpon>frmWithdrawClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWithdrawDJ.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWithdrawDJ.Designer.cs">
+      <DependentUpon>frmWithdrawDJ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services.cs" />
+    <Compile Include="ValidateData.cs" />
+    <EmbeddedResource Include="frmAddClient.resx">
+      <DependentUpon>frmAddClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAddDJ.resx">
+      <DependentUpon>frmAddDJ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAnalyseRevenueByYear.resx">
+      <DependentUpon>frmAnalyseRevenueByYear.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAnalyseRevenueByService.resx">
+      <DependentUpon>frmAnalyseRevenueByService.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCancelBooking.resx">
+      <DependentUpon>frmCancelBooking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChangeBooking.resx">
+      <DependentUpon>frmChangeBooking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLogService.resx">
+      <DependentUpon>frmLogService.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMainMenu.resx">
+      <DependentUpon>frmMainMenu.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMakeBooking.resx">
+      <DependentUpon>frmMakeBooking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmQueryClient.resx">
+      <DependentUpon>frmQueryClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmQueryService.resx">
+      <DependentUpon>frmQueryService.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmShowDJSchedule.resx">
+      <DependentUpon>frmShowDJSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUpdateClient.resx">
+      <DependentUpon>frmUpdateClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUpdateService.resx">
+      <DependentUpon>frmUpdateService.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWithdrawClient.resx">
+      <DependentUpon>frmWithdrawClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWithdrawDJ.resx">
+      <DependentUpon>frmWithdrawDJ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\banner.jpg" />
+    <None Include="Resources\DJ18.jpg" />
+    <None Include="Resources\DJ17.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Cafe Royal.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\CafeRoyal.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ColmAndMum.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ColmG-BusinessCard3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ColmG-BusinessCard4.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ColmG-BusinessCard6.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ColmG-BusinessCard7.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ColmG-BusinessCard8.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ColmG-BusinessCard9.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ColmG-BusinessCard24.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ColmG-BusinessCardBanner.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ColmGsmall.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DarraghWedding.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DarraghWedding2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ5.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ6.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ7.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ8.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ9.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ10.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ11.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ12.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ13.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ14.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ15.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\DJ16.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Me O%27Neills 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Me O%27Neills.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Me Radio Kerry.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Me Shannonside 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Me Shannonside.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MeOneills.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MeONeills2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MeONeills3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MeRadioKerry.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MeShannonside.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MeShannonside2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MumParty.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MumParty2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\O%27Neills 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\O%27Neills 3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\O%27Neills 4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\O%27Neills Leytonstone inside.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\O%27Neills Leytonstone.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Oneills.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\O%27Neills.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ONeills2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ONeills3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ONeills4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ONeillsLeytonstone.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ONeillsLeytonstoneInside.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Radio Kerry.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\RadioKerry.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\SarahJaneParty.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Shannonside FM.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ShannonsideFM.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\StevoWedding.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\The Borderline inside.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\The Borderline.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\The Swan inside.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\The Swan.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\The Vale Bar.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\The Venue flyer.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\The Venue inside.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\The Venue.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\TheBorderline.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\TheBorderlineInside.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\TheSwan.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\TheSwanInside.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\TheValeBar.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\TheVenue.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\TheVenueFlyer.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\TheVenueInside.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
